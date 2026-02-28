@@ -22,14 +22,28 @@ function Login({ onLogin }) {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
 
-    if (usuario === "admin" && senha === "1234") {
-      onLogin(usuario);
-      setErro("");
-    } else {
-      setErro("Usuário ou senha incorretos!");
+    try {
+      const resposta = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ usuario, senha })
+      });
+
+      const dados = await resposta.json();
+
+      if (dados.sucesso) {
+        onLogin(dados.usuario);
+        setErro("");
+      } else {
+        setErro("Usuário ou senha incorretos!");
+      }
+    } catch (error) {
+      setErro("Erro ao conectar com o servidor!");
     }
   }
 
@@ -61,8 +75,6 @@ function Login({ onLogin }) {
             Entrar
           </button>
         </form>
-
-        <p style={styles.dica}>Use: admin / 1234</p>
       </div>
     </div>
   );
@@ -157,12 +169,6 @@ const styles = {
     fontSize: "0.9rem",
     fontFamily: "sans-serif",
     margin: 0,
-  },
-  dica: {
-    marginTop: "16px",
-    color: "#bbb",
-    fontSize: "0.85rem",
-    fontFamily: "sans-serif",
   },
 };
 
