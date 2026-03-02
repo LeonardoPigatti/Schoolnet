@@ -6,6 +6,7 @@ import InstitutionalDocuments from "./InstitutionalDocuments";
 import CurriculumMatrix from "./CurriculumMatrix";
 import ListTeacher from "./ListTeacher";
 import BoletimSemestre from "./BoletimSemestre";
+import HorarioAluno from "./HorarioAluno";
 
 
 
@@ -48,6 +49,12 @@ function BemVindo({ usuario, onSair }) {
           path="/professores"
           element={<ListTeacher userId={usuario?.alunoId} />}
         />
+
+          <Route
+  path="/horario"
+  element={<HorarioAluno alunoId={usuario?.alunoId} />}
+/>
+
           <Route
           path="/notas"
           element={

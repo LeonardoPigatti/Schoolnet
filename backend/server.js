@@ -28,8 +28,18 @@ const Curso = mongoose.model("Curso", CursoSchema);
 const DisciplinaSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   semestre: { type: Number, required: true },
-  cargaHoraria: { type: Number, required: true }, // 🔥 usado para limite de faltas
-  curso: { type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true }
+  cargaHoraria: { type: Number, required: true },
+  horario: {
+    dia: { type: String, required: true },   // Ex: "Segunda"
+    inicio: { type: String, required: true }, // Ex: "19:00"
+    fim: { type: String, required: true }     // Ex: "20:40"
+  },
+  sala: { type: String, required: true },     // Ex: "B102"
+  curso: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Curso",
+    required: true
+  }
 });
 
 const Disciplina = mongoose.model("Disciplina", DisciplinaSchema);
