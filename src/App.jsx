@@ -2,6 +2,8 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Navbar";
 import Calendar from "./Calendar";
+import InstitutionalDocuments from "./InstitutionalDocuments";
+
 import "./App.css";
 
 function BemVindo({ usuario, onSair }) {
@@ -25,7 +27,8 @@ function BemVindo({ usuario, onSair }) {
             </div>
           }
         />
-        <Route path="/calendario" element={<Calendar />} />
+        <Route path="/calendarioacademico" element={<Calendar />} />
+        <Route path="/documentosinstitucionais" element={<InstitutionalDocuments />} />
       </Routes>
     </div>
   );
@@ -54,6 +57,7 @@ function Login({ onLogin }) {
       } else {
         setErro("Usuário ou senha incorretos!");
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setErro("Erro ao conectar com o servidor!");
     }

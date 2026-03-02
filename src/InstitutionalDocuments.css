@@ -1,0 +1,85 @@
+body {
+  background-color: #f4f4f4;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #2f4f6f;
+}
+
+.documents-container {
+  padding: 40px 80px;
+}
+
+/* TÍTULOS */
+
+.documents-title {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  color: #3c5f82;
+}
+
+.documents-subtitle {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 50px;
+  color: #3c5f82;
+}
+
+/* Collapse principal */
+
+.collapse {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.collapse-header {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  cursor: pointer;
+  color: #3c5f82;
+}
+
+.collapse-content {
+  padding-left: 20px;
+}
+
+/* Sub-collapses */
+
+.sub-collapse {
+  margin-bottom: 20px;
+}
+
+.sub-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: #3c5f82;
+}
+
+/* Arquivos */
+
+.file-item {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+.file-link {
+  text-decoration: none;
+  color: #2a6db3;
+  font-size: 15px;
+}
+
+.file-link:hover {
+  text-decoration: underline;
+}
+
+/* Ícone tipo seta */
+
+.file-link::before {
+  content: "› ";
+  font-weight: bold;
+  color: #3c5f82;
+}
