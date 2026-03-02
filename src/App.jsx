@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Navbar";
+import Calendar from "./Calendar";
 import "./App.css";
 
 function BemVindo({ usuario, onSair }) {
@@ -7,12 +9,24 @@ function BemVindo({ usuario, onSair }) {
     <div style={styles.pagina}>
       <Navbar usuario={usuario} onSair={onSair} />
 
-      <div style={styles.conteudo}>
-        <div style={styles.card}>
-          <h1 style={styles.titulo}>Bem-vindo, {usuario}! 👋</h1>
-          <p style={styles.subtitulo}>Você está logado com sucesso.</p>
-        </div>
-      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div style={styles.conteudo}>
+              <div style={styles.card}>
+                <h1 style={styles.titulo}>
+                  Bem-vindo, {usuario}! 👋
+                </h1>
+                <p style={styles.subtitulo}>
+                  Você está logado com sucesso.
+                </p>
+              </div>
+            </div>
+          }
+        />
+        <Route path="/calendario" element={<Calendar />} />
+      </Routes>
     </div>
   );
 }
@@ -28,9 +42,7 @@ function Login({ onLogin }) {
     try {
       const resposta = await fetch("http://localhost:5000/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ usuario, senha })
       });
 
@@ -83,16 +95,18 @@ function Login({ onLogin }) {
 function App() {
   const [usuarioLogado, setUsuarioLogado] = useState(null);
 
-  if (usuarioLogado) {
-    return (
-      <BemVindo
-        usuario={usuarioLogado}
-        onSair={() => setUsuarioLogado(null)}
-      />
-    );
-  }
-
-  return <Login onLogin={(nome) => setUsuarioLogado(nome)} />;
+  return (
+    <Router>
+      {usuarioLogado ? (
+        <BemVindo
+          usuario={usuarioLogado}
+          onSair={() => setUsuarioLogado(null)}
+        />
+      ) : (
+        <Login onLogin={(nome) => setUsuarioLogado(nome)} />
+      )}
+    </Router>
+  );
 }
 
 const styles = {

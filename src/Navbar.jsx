@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar({ usuario, onSair }) {
@@ -92,12 +93,10 @@ function Navbar({ usuario, onSair }) {
 
   return (
     <>
-      {/* Barra azul */}
       <div className="top-bar">
         <div className="top-content">
           <h1 className="logo">Schoolnet</h1>
 
-          {/* Usuário */}
           <div ref={dropdownRef} className="menu-item">
             <span
               className="user-area"
@@ -110,18 +109,27 @@ function Navbar({ usuario, onSair }) {
 
             {openMenu === "usuario" && (
               <div className="dropdown-menu">
-                {menus.usuario.map((item, index) => (
-                  <div key={index} className="dropdown-item">
-                    {item}
-                  </div>
-                ))}
+                {menus.usuario.map((item, index) =>
+                  item === "Sair" ? (
+                    <div
+                      key={index}
+                      className="dropdown-item"
+                      onClick={onSair}
+                    >
+                      {item}
+                    </div>
+                  ) : (
+                    <div key={index} className="dropdown-item">
+                      {item}
+                    </div>
+                  )
+                )}
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* Barra cinza */}
       <div className="menu-bar">
         <div className="menu-content">
           {menuLabels.map((menu) => (
@@ -137,11 +145,22 @@ function Navbar({ usuario, onSair }) {
 
               {openMenu === menu.id && (
                 <div className="dropdown-menu">
-                  {menus[menu.id].map((item, index) => (
-                    <div key={index} className="dropdown-item">
-                      {item}
-                    </div>
-                  ))}
+                  {menus[menu.id].map((item, index) =>
+                    item === "Calendário Acadêmico" ? (
+                      <Link
+                        key={index}
+                        to="/calendario"
+                        className="dropdown-item"
+                        onClick={() => setOpenMenu(null)}
+                      >
+                        {item}
+                      </Link>
+                    ) : (
+                      <div key={index} className="dropdown-item">
+                        {item}
+                      </div>
+                    )
+                  )}
                 </div>
               )}
             </div>
