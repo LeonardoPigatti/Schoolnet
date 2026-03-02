@@ -7,33 +7,167 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔗 Conectar ao MongoDB local
-mongoose.connect("mongodb://localhost:27017/meubanco")
+mongoose.connect("mongodb://localhost:27017/faculdade")
   .then(() => console.log("MongoDB conectado!"))
-  .catch(err => console.log("Erro ao conectar:", err));
+  .catch(err => console.log(err));
 
-// 📦 Schema
-const UsuarioSchema = new mongoose.Schema({
-  usuario: String,
-  senha: String
+/* =========================
+   📚 SCHEMAS
+========================= */
+
+// 🎓 Curso
+const CursoSchema = new mongoose.Schema({
+  nome: { type: String, required: true },
+  duracaoSemestres: { type: Number, required: true }
 });
 
-const Usuario = mongoose.model("usuarios", UsuarioSchema);
+const Curso = mongoose.model("Curso", CursoSchema);
 
-// 🔐 Rota de login
-app.post("/login", async (req, res) => {
-  const { usuario, senha } = req.body;
+// 📖 Disciplina
+const DisciplinaSchema = new mongoose.Schema({
+  nome: { type: String, required: true },
+  semestre: { type: Number, required: true },
+  curso: { type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true }
+});
 
+const Disciplina = mongoose.model("Disciplina", DisciplinaSchema);
+
+// 👨‍🎓 Aluno
+const bcrypt = require("bcrypt");
+
+const AlunoSchema = new mongoose.Schema({
+  nome: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  senha: { type: String, required: true },
+  curso: { type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true }
+});
+
+const Aluno = mongoose.model("Aluno", AlunoSchema);
+
+/* =========================
+   🚀 ROTAS
+========================= */
+
+// Criar aluno
+// app.post("/alunos", async (req, res) => {
+//   try {
+//     const aluno = await Aluno.create(req.body);
+//     res.json(aluno);
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
+
+app.post("/alunos/register", async (req, res) => {
   try {
-    const user = await Usuario.findOne({ usuario, senha });
+    const { nome, email, senha, curso } = req.body;
 
-    if (user) {
-      res.json({ sucesso: true, usuario: user.usuario });
-    } else {
-      res.json({ sucesso: false });
+    // Verifica se já existe
+    const existe = await Aluno.findOne({ email });
+    if (existe) {
+      return res.json({ erro: "Email já cadastrado" });
     }
+
+    // Criptografar senha
+    const senhaHash = await bcrypt.hash(senha, 10);
+
+    const aluno = await Aluno.create({
+      nome,
+      email,
+      senha: senhaHash,
+      curso
+    });
+
+    res.json({ mensagem: "Aluno criado com sucesso!" });
+
   } catch (error) {
-    res.status(500).json({ sucesso: false });
+    res.status(500).json(error);
+  }
+});
+
+app.post("/alunos/login", async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+
+    const aluno = await Aluno.findOne({ email }).populate("curso");
+
+    if (!aluno) {
+      return res.json({ sucesso: false });
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha, aluno.senha);
+
+    if (!senhaCorreta) {
+      return res.json({ sucesso: false });
+    }
+
+    res.json({
+      sucesso: true,
+      nome: aluno.nome,
+      curso: aluno.curso.nome
+    });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// Listar alunos com curso
+app.get("/alunos", async (req, res) => {
+  const alunos = await Aluno.find().populate("curso");
+  res.json(alunos);
+});
+
+// Listar cursos
+app.get("/cursos", async (req, res) => {
+  const cursos = await Curso.find();
+  res.json(cursos);
+});
+
+// Listar disciplinas de um curso
+app.get("/disciplinas/:cursoId", async (req, res) => {
+  const disciplinas = await Disciplina.find({ curso: req.params.cursoId });
+  res.json(disciplinas);
+});
+
+app.get("/seed", async (req, res) => {
+  try {
+
+    // 🔥 Apagar dados antigos (para não duplicar)
+    await Curso.deleteMany();
+    await Disciplina.deleteMany();
+
+    // 📚 Criar cursos
+    const eng = await Curso.create({
+      nome: "Engenharia da Computação",
+      duracaoSemestres: 10
+    });
+
+    const med = await Curso.create({
+      nome: "Medicina",
+      duracaoSemestres: 12
+    });
+
+    // 📖 Disciplinas Engenharia
+    await Disciplina.create([
+      { nome: "Cálculo I", semestre: 1, curso: eng._id },
+      { nome: "Lógica de Programação", semestre: 1, curso: eng._id },
+      { nome: "Estrutura de Dados", semestre: 2, curso: eng._id },
+      { nome: "Física I", semestre: 2, curso: eng._id }
+    ]);
+
+    // 🏥 Disciplinas Medicina
+    await Disciplina.create([
+      { nome: "Anatomia I", semestre: 1, curso: med._id },
+      { nome: "Biologia Celular", semestre: 1, curso: med._id },
+      { nome: "Fisiologia I", semestre: 2, curso: med._id },
+      { nome: "Histologia", semestre: 2, curso: med._id }
+    ]);
+
+    res.json({ mensagem: "Banco populado com sucesso!" });
+
+  } catch (error) {
+    res.status(500).json(error);
   }
 });
 

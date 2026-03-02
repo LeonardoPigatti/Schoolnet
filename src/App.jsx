@@ -39,29 +39,29 @@ function Login({ onLogin }) {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  async function handleLogin(e) {
-    e.preventDefault();
+ async function handleLogin(e) {
+  e.preventDefault();
 
-    try {
-      const resposta = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuario, senha })
-      });
+  try {
+    const resposta = await fetch("http://localhost:5000/alunos/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: usuario, senha })
+    });
 
-      const dados = await resposta.json();
+    const dados = await resposta.json();
 
-      if (dados.sucesso) {
-        onLogin(dados.usuario);
-        setErro("");
-      } else {
-        setErro("Usuário ou senha incorretos!");
-      }
-    // eslint-disable-next-line no-unused-vars
-    } catch (error) {
-      setErro("Erro ao conectar com o servidor!");
+    if (dados.sucesso) {
+      onLogin(dados.nome); // <- aqui
+      setErro("");
+    } else {
+      setErro("Usuário ou senha incorretos!");
     }
+
+  } catch (error) {
+    setErro("Erro ao conectar com o servidor!");
   }
+}
 
   return (
     <div style={styles.containerLogin}>
