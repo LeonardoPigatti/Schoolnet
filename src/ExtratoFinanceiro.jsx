@@ -3,7 +3,10 @@ import "./ExtratoFinanceiro.css";
 
 function ExtratoFinanceiro({ alunoId }) {
   const [parcelas, setParcelas] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [totalBruto, setTotalBruto] = useState(0);
+  const [desconto, setDesconto] = useState(0);
+  const [totalLiquido, setTotalLiquido] = useState(0);
+  const [bolsa, setBolsa] = useState(0);
 
   useEffect(() => {
     if (!alunoId) return;
@@ -15,8 +18,11 @@ function ExtratoFinanceiro({ alunoId }) {
 
       const data = await response.json();
 
-      setParcelas(data.parcelas);
-      setTotal(data.totalMensal);
+      setParcelas(data.parcelas || []);
+      setTotalBruto(data.totalBruto || 0);
+      setDesconto(data.desconto || 0);
+      setTotalLiquido(data.totalLiquido || 0);
+      setBolsa(data.bolsa || 0);
     }
 
     buscarExtrato();
@@ -38,7 +44,12 @@ function ExtratoFinanceiro({ alunoId }) {
     <div className="extrato-container">
       <h2>Extrato Financeiro</h2>
 
-      <p><strong>Total Mensal:</strong> R$ {total.toFixed(2)}</p>
+      <div className="resumo-financeiro">
+        <p><strong>Total Bruto:</strong> R$ {Number(totalBruto).toFixed(2)}</p>
+        <p><strong>Bolsa:</strong> {bolsa}%</p>
+        <p><strong>Desconto:</strong> R$ {Number(desconto).toFixed(2)}</p>
+        <p><strong>Total Final:</strong> R$ {Number(totalLiquido).toFixed(2)}</p>
+      </div>
 
       <table>
         <thead>
@@ -58,7 +69,7 @@ function ExtratoFinanceiro({ alunoId }) {
               <td>{calcularDias(p.vencimento)}</td>
               <td>Boleto Bancário</td>
               <td>{p.referencia}</td>
-              <td>{p.valor.toFixed(2)}</td>
+              <td>{Number(p.valor).toFixed(2)}</td>
               <td>{p.titulo}</td>
             </tr>
           ))}

@@ -42,9 +42,8 @@ function Navbar({ usuario, onSair }) {
     ],
     financeiro: [
       "Extrato",
-      "Renovações de Bolsa",
+      "PagFacil",
     ],
-    pagfacil: ["Adesão"],
     atividades: [
       "Atividades Complementares",
       "Estágio",
@@ -72,7 +71,6 @@ function Navbar({ usuario, onSair }) {
   const menuLabels = [
     { id: "secretaria", label: "Secretaria" },
     { id: "financeiro", label: "Financeiro" },
-    { id: "pagfacil", label: "PagFácil" },
     { id: "atividades", label: "Atividades Acadêmicas" },
     { id: "requerimentos", label: "Requerimentos" },
     { id: "spa", label: "SPA e RE" },

@@ -54,7 +54,8 @@ const AlunoSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   senha: { type: String, required: true },
-  curso: { type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true }
+  curso: { type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true },
+  bolsa: { type: Number, default: 0 } // 🆕
 });
 
 const Aluno = mongoose.model("Aluno", AlunoSchema);
@@ -167,6 +168,74 @@ app.post("/alunos/register", async (req, res) => {
 
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+app.post("/pagfacil/:alunoId", async (req, res) => {
+  try {
+    const { rendaFamiliar, escolaPublica, notasAltas } = req.body;
+
+    let bolsa = 0;
+
+    if (rendaFamiliar <= 1500 && escolaPublica) {
+      bolsa = 100;
+    } else if (rendaFamiliar <= 3000) {
+      bolsa = 50;
+    } else if (notasAltas) {
+      bolsa = 25;
+    }
+
+    await Aluno.findByIdAndUpdate(req.params.alunoId, { bolsa });
+
+    res.json({
+      mensagem: "Bolsa calculada com sucesso!",
+      bolsa
+    });
+
+  // eslint-disable-next-line no-unused-vars
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao calcular bolsa" });
+  }
+});
+
+app.get("/financeiro/:alunoId", async (req, res) => {
+  try {
+    const aluno = await Aluno.findById(req.params.alunoId);
+
+    const matriculas = await Matricula.find({
+      aluno: req.params.alunoId
+    }).populate("disciplina");
+
+    const totalBruto = matriculas.reduce(
+      (acc, mat) => acc + mat.disciplina.valor,
+      0
+    );
+
+    const desconto = totalBruto * (aluno.bolsa / 100);
+    const totalLiquido = totalBruto - desconto;
+
+    const parcelas = [];
+
+    for (let i = 1; i <= 4; i++) {
+      parcelas.push({
+        vencimento: new Date(2026, i + 1, 10),
+        referencia: `${i}/2026`,
+        valor: totalLiquido,
+        titulo: Math.floor(Math.random() * 9000000)
+      });
+    }
+
+    res.json({
+      bolsa: aluno.bolsa,
+      totalBruto,
+      desconto,
+      totalLiquido,
+      parcelas
+    });
+
+  // eslint-disable-next-line no-unused-vars
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao gerar extrato" });
   }
 });
 
@@ -331,38 +400,6 @@ app.get("/matriz/:alunoId", async (req, res) => {
   }
 });
 
-app.get("/financeiro/:alunoId", async (req, res) => {  try {
-    const matriculas = await Matricula.find({
-      aluno: req.params.alunoId
-    }).populate("disciplina");
-
-    const total = matriculas.reduce(
-      (acc, mat) => acc + mat.disciplina.valor,
-      0
-    );
-
-    // Simulação 4 parcelas
-    const parcelas = [];
-
-    for (let i = 1; i <= 4; i++) {
-      parcelas.push({
-        vencimento: new Date(2026, i + 1, 10),
-        referencia: `${i}/2026`,
-        valor: total,
-        titulo: Math.floor(Math.random() * 9000000)
-      });
-    }
-
-    res.json({
-      totalMensal: total,
-      parcelas
-    });
-
-  // eslint-disable-next-line no-unused-vars
-  } catch (err) {
-    res.status(500).json({ erro: "Erro ao gerar extrato" });
-  }
-});
 
 /* =========================
    🌱 SEED ATUALIZADO

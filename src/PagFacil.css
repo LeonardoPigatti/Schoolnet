@@ -1,0 +1,32 @@
+.pagfacil-container {
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+}
+
+input {
+  padding: 10px;
+}
+
+button {
+  padding: 12px;
+  background: #4a7fa5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.resultado {
+  margin-top: 20px;
+  font-weight: bold;
+  color: green;
+}
