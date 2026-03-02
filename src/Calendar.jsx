@@ -1,96 +1,98 @@
+import "./Calendar.css";
+
 function Calendar() {
-  const eventos = [
-    {
-      data: "05/02/2025",
-      evento: "Início do Semestre Letivo"
-    },
-    {
-      data: "18/03/2025",
-      evento: "Avaliação Parcial (AP1)"
-    },
-    {
-      data: "21/04/2025",
-      evento: "Feriado - Tiradentes"
-    },
-    {
-      data: "10/06/2025",
-      evento: "Avaliação Parcial (AP2)"
-    },
-    {
-      data: "01/07/2025",
-      evento: "Encerramento do Semestre"
+  const year = 2026;
+  const months = [0, 1, 2, 3, 4, 5];
+
+  function generateCalendar(month) {
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const days = [];
+
+    for (let i = 0; i < firstDay; i++) {
+      days.push({ day: null });
     }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      days.push({ day: d });
+    }
+
+    return days;
+  }
+
+  const monthNames = [
+    "JANEIRO",
+    "FEVEREIRO",
+    "MARÇO",
+    "ABRIL",
+    "MAIO",
+    "JUNHO",
   ];
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.titulo}>Calendário Acadêmico</h1>
+    <div className="calendar-container">
+      <h1 className="calendar-title">Calendário Acadêmico</h1>
 
-        <table style={styles.tabela}>
-          <thead>
-            <tr>
-              <th style={styles.th}>Data</th>
-              <th style={styles.th}>Evento</th>
-            </tr>
-          </thead>
-          <tbody>
-            {eventos.map((item, index) => (
-              <tr key={index}>
-                <td style={styles.td}>{item.data}</td>
-                <td style={styles.td}>{item.evento}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="calendar-grid">
+        {months.map((month, index) => (
+          <div key={month} className="calendar-card">
+            <div className="calendar-header">
+              {monthNames[index]}/{year}
+            </div>
+
+            <div className="week-days">
+              {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => (
+                <div key={day}>{day}</div>
+              ))}
+            </div>
+
+            <div className="days-grid">
+              {generateCalendar(month).map((item, i) => {
+                const isLetivo = item.day >= 23;
+                const isFeriado = item.day === 7; // exemplo
+
+                return (
+                  <div
+                    key={i}
+                    className={`day 
+                      ${item.day ? "" : "empty"} 
+                      ${isLetivo ? "letivo" : ""} 
+                      ${isFeriado ? "feriado" : ""}`}
+                  >
+                    {item.day || ""}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* LEGENDA */}
+      <div className="legend">
+        <h3>Legenda</h3>
+
+        <div className="legend-item">
+          <div className="legend-box nao-letivo"></div>
+          <span> - Dias não Letivos</span>
+        </div>
+
+        <div className="legend-item">
+          <div className="legend-box letivo"></div>
+          <span> - Dias Letivos</span>
+        </div>
+
+        <div className="legend-item">
+          <div className="legend-box feriado"></div>
+          <span> - Feriados</span>
+        </div>
       </div>
     </div>
   );
 }
 
-const styles = {
-  container: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    padding: "40px",
-    backgroundColor: "#f5f7fa",
-    minHeight: "calc(100vh - 120px)"
-  },
-  card: {
-    backgroundColor: "#fff",
-    padding: "40px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-    width: "100%",
-    maxWidth: "800px"
-  },
-  titulo: {
-    color: "#4a7fa5",
-    fontWeight: 300,
-    fontSize: "2rem",
-    marginBottom: "24px",
-    fontFamily: "sans-serif"
-  },
-  tabela: {
-    width: "100%",
-    borderCollapse: "collapse"
-  },
-  th: {
-    textAlign: "left",
-    padding: "12px",
-    borderBottom: "2px solid #d0e0f0",
-    color: "#4a7fa5",
-    fontWeight: "600",
-    fontFamily: "sans-serif"
-  },
-  td: {
-    padding: "12px",
-    borderBottom: "1px solid #eee",
-    fontFamily: "sans-serif",
-    color: "#555"
-  }
-};
-
 export default Calendar;
+
+// TODO Fazer o perfil do cordernador ajustar os dias de aula
+// TODO Melhorar o visual no final do dia
