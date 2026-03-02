@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Navbar";
 import Calendar from "./Calendar";
 import InstitutionalDocuments from "./InstitutionalDocuments";
+import CurriculumMatrix from "./CurriculumMatrix";
 
 import "./App.css";
 
 function BemVindo({ usuario, onSair }) {
   return (
     <div style={styles.pagina}>
-      <Navbar usuario={usuario} onSair={onSair} />
+      <Navbar usuario={usuario.nome} onSair={onSair} />
 
       <Routes>
         <Route
@@ -18,7 +19,7 @@ function BemVindo({ usuario, onSair }) {
             <div style={styles.conteudo}>
               <div style={styles.card}>
                 <h1 style={styles.titulo}>
-                  Bem-vindo, {usuario}! 👋
+                  Bem-vindo, {usuario.nome}! 👋
                 </h1>
                 <p style={styles.subtitulo}>
                   Você está logado com sucesso.
@@ -27,8 +28,18 @@ function BemVindo({ usuario, onSair }) {
             </div>
           }
         />
+
         <Route path="/calendarioacademico" element={<Calendar />} />
-        <Route path="/documentosinstitucionais" element={<InstitutionalDocuments />} />
+        <Route
+          path="/documentosinstitucionais"
+          element={<InstitutionalDocuments />}
+        />
+
+        {/* ✅ CORRIGIDO */}
+        <Route
+          path="/matrizcurricular"
+          element={<CurriculumMatrix userId={usuario?.alunoId} />}
+        />
       </Routes>
     </div>
   );
@@ -39,29 +50,31 @@ function Login({ onLogin }) {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
- async function handleLogin(e) {
-  e.preventDefault();
+  async function handleLogin(e) {
+    e.preventDefault();
 
-  try {
-    const resposta = await fetch("http://localhost:5000/alunos/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: usuario, senha })
-    });
+    try {
+      const resposta = await fetch("http://localhost:5000/alunos/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: usuario, senha }),
+      });
 
-    const dados = await resposta.json();
+      const dados = await resposta.json();
 
-    if (dados.sucesso) {
-      onLogin(dados.nome); // <- aqui
-      setErro("");
-    } else {
-      setErro("Usuário ou senha incorretos!");
+      if (dados.sucesso) {
+        // ✅ Agora salva nome + alunoId
+        onLogin({
+          nome: dados.nome,
+          alunoId: dados.alunoId,
+        });
+      } else {
+        setErro("Usuário ou senha incorretos!");
+      }
+    } catch (error) {
+      setErro("Erro ao conectar com o servidor!");
     }
-
-  } catch (error) {
-    setErro("Erro ao conectar com o servidor!");
   }
-}
 
   return (
     <div style={styles.containerLogin}>
@@ -107,7 +120,7 @@ function App() {
           onSair={() => setUsuarioLogado(null)}
         />
       ) : (
-        <Login onLogin={(nome) => setUsuarioLogado(nome)} />
+        <Login onLogin={(dados) => setUsuarioLogado(dados)} />
       )}
     </Router>
   );

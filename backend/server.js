@@ -48,15 +48,6 @@ const Aluno = mongoose.model("Aluno", AlunoSchema);
    🚀 ROTAS
 ========================= */
 
-// Criar aluno
-// app.post("/alunos", async (req, res) => {
-//   try {
-//     const aluno = await Aluno.create(req.body);
-//     res.json(aluno);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
 
 app.post("/alunos/register", async (req, res) => {
   try {
@@ -102,10 +93,11 @@ app.post("/alunos/login", async (req, res) => {
     }
 
     res.json({
-      sucesso: true,
-      nome: aluno.nome,
-      curso: aluno.curso.nome
-    });
+  sucesso: true,
+  nome: aluno.nome,
+  alunoId: aluno._id,   // 🔥 ADICIONA ISSO
+  curso: aluno.curso.nome
+});
 
   } catch (error) {
     res.status(500).json(error);
@@ -165,6 +157,44 @@ app.get("/seed", async (req, res) => {
     ]);
 
     res.json({ mensagem: "Banco populado com sucesso!" });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// 🎓 Matriz curricular do aluno
+app.get("/matriz/:alunoId", async (req, res) => {
+  try {
+    // 1️⃣ Buscar aluno e descobrir curso dele
+    const aluno = await Aluno.findById(req.params.alunoId).populate("curso");
+
+    if (!aluno) {
+      return res.status(404).json({ erro: "Aluno não encontrado" });
+    }
+
+    // 2️⃣ Buscar disciplinas do curso do aluno
+    const disciplinas = await Disciplina.find({
+      curso: aluno.curso._id
+    }).sort({ semestre: 1 });
+
+    // 3️⃣ Agrupar por semestre
+    const matriz = {};
+
+    disciplinas.forEach((disc) => {
+      if (!matriz[disc.semestre]) {
+        matriz[disc.semestre] = [];
+      }
+
+      matriz[disc.semestre].push(disc);
+    });
+
+    // 4️⃣ Retornar organizado
+    res.json({
+      aluno: aluno.nome,
+      curso: aluno.curso.nome,
+      matriz
+    });
 
   } catch (error) {
     res.status(500).json(error);
