@@ -29,12 +29,17 @@ const DisciplinaSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   semestre: { type: Number, required: true },
   cargaHoraria: { type: Number, required: true },
+
   horario: {
-    dia: { type: String, required: true },   // Ex: "Segunda"
-    inicio: { type: String, required: true }, // Ex: "19:00"
-    fim: { type: String, required: true }     // Ex: "20:40"
+    dia: { type: String, required: true },
+    inicio: { type: String, required: true },
+    fim: { type: String, required: true }
   },
-  sala: { type: String, required: true },     // Ex: "B102"
+
+  sala: { type: String, required: true },
+
+  valor: { type: Number, required: true }, // 🆕
+
   curso: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Curso",
@@ -326,6 +331,39 @@ app.get("/matriz/:alunoId", async (req, res) => {
   }
 });
 
+app.get("/financeiro/:alunoId", async (req, res) => {  try {
+    const matriculas = await Matricula.find({
+      aluno: req.params.alunoId
+    }).populate("disciplina");
+
+    const total = matriculas.reduce(
+      (acc, mat) => acc + mat.disciplina.valor,
+      0
+    );
+
+    // Simulação 4 parcelas
+    const parcelas = [];
+
+    for (let i = 1; i <= 4; i++) {
+      parcelas.push({
+        vencimento: new Date(2026, i + 1, 10),
+        referencia: `${i}/2026`,
+        valor: total,
+        titulo: Math.floor(Math.random() * 9000000)
+      });
+    }
+
+    res.json({
+      totalMensal: total,
+      parcelas
+    });
+
+  // eslint-disable-next-line no-unused-vars
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao gerar extrato" });
+  }
+});
+
 /* =========================
    🌱 SEED ATUALIZADO
 ========================= */
@@ -345,11 +383,35 @@ app.get("/seed", async (req, res) => {
       duracaoSemestres: 12
     });
 
-    await Disciplina.create([
-      { nome: "Cálculo I", semestre: 1, cargaHoraria: 80, curso: eng._id },
-      { nome: "Lógica de Programação", semestre: 1, cargaHoraria: 60, curso: eng._id },
-      { nome: "Anatomia I", semestre: 1, cargaHoraria: 100, curso: med._id }
-    ]);
+await Disciplina.create([
+  {
+    nome: "Cálculo I",
+    semestre: 1,
+    cargaHoraria: 80,
+    valor: 1366.95,
+    horario: { dia: "Segunda", inicio: "19:00", fim: "20:40" },
+    sala: "B101",
+    curso: eng._id
+  },
+  {
+    nome: "Lógica de Programação",
+    semestre: 1,
+    cargaHoraria: 60,
+    valor: 1366.95,
+    horario: { dia: "Terça", inicio: "19:00", fim: "20:40" },
+    sala: "B102",
+    curso: eng._id
+  },
+  {
+    nome: "Anatomia I",
+    semestre: 1,
+    cargaHoraria: 100,
+    valor: 1500.00,
+    horario: { dia: "Quarta", inicio: "19:00", fim: "22:00" },
+    sala: "A201",
+    curso: med._id
+  }
+]);
 
     res.json({ mensagem: "Banco populado com sucesso!" });
 
@@ -357,6 +419,8 @@ app.get("/seed", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+
 
 app.listen(5000, () => {
   console.log("Servidor rodando na porta 5000");

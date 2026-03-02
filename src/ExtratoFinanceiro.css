@@ -1,0 +1,78 @@
+.extrato-container {
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.extrato-container h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.alerta {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #ffeeba;
+  font-size: 0.9rem;
+}
+
+.total-box {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #34495e;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #4a7fa5;
+  color: white;
+}
+
+th, td {
+  padding: 14px 12px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+th {
+  font-weight: 600;
+}
+
+tbody tr {
+  border-bottom: 1px solid #eaeaea;
+}
+
+tbody tr:hover {
+  background-color: #f1f6fb;
+}
+
+.status-vencendo {
+  color: #d35400;
+  font-weight: bold;
+}
+
+.status-ok {
+  color: #27ae60;
+}
+
+.status-vencido {
+  color: #c0392b;
+  font-weight: bold;
+}
