@@ -4,6 +4,8 @@ import Navbar from "./Navbar";
 import Calendar from "./Calendar";
 import InstitutionalDocuments from "./InstitutionalDocuments";
 import CurriculumMatrix from "./CurriculumMatrix";
+import ListTeacher from "./ListTeacher";
+
 
 import "./App.css";
 
@@ -39,6 +41,10 @@ function BemVindo({ usuario, onSair }) {
         <Route
           path="/matrizcurricular"
           element={<CurriculumMatrix userId={usuario?.alunoId} />}
+        />
+        <Route
+          path="/professores"
+          element={<ListTeacher userId={usuario?.alunoId} />}
         />
       </Routes>
     </div>

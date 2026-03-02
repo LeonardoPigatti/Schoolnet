@@ -41,29 +41,19 @@ function Navbar({ usuario, onSair }) {
       "Rematrícula",
     ],
     financeiro: [
-      "Documentos de Matrícula",
       "Extrato",
-      "Pré-Negociação",
       "Renovações de Bolsa",
-      "Regularização de Débitos",
     ],
-    pagfacil: ["Adesão", "Prorrogação", "Renovação"],
+    pagfacil: ["Adesão"],
     atividades: [
       "Atividades Complementares",
-      "Atividades de Extensão",
-      "Projeto Interdisciplinar",
       "Estágio",
       "TCC",
-      "Projeto de Pesquisa",
       "Apoio à Pesquisa",
     ],
     requerimentos: [
-      "Requerimentos",
       "Diploma",
       "Documentos",
-      "Guarda Religiosa",
-      "Licença Médica",
-      "Outros Requerimentos",
     ],
     spa: [
       "Sistema Programado Avaliação",
@@ -73,11 +63,10 @@ function Navbar({ usuario, onSair }) {
     material: [
       "Cronograma",
       "Perguntas Frequentes",
-      "Plano de Ensino",
       "Manual Schoolnet",
       "Repositório Institucional",
     ],
-    dp: ["Minhas DPs", "Avaliações DP Modular"],
+    dp: ["Minhas DPs"],
   };
 
   const menuLabels = [

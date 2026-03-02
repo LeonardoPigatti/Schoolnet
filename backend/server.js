@@ -32,7 +32,7 @@ const DisciplinaSchema = new mongoose.Schema({
 
 const Disciplina = mongoose.model("Disciplina", DisciplinaSchema);
 
-// 👨‍🎓 Aluno
+// Aluno
 const bcrypt = require("bcrypt");
 
 const AlunoSchema = new mongoose.Schema({
@@ -44,9 +44,52 @@ const AlunoSchema = new mongoose.Schema({
 
 const Aluno = mongoose.model("Aluno", AlunoSchema);
 
+// Professor
+
+const ProfessorSchema = new mongoose.Schema({
+  nome: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  senha: { type: String, required: true },
+  ativo: { type: Boolean, required: true },
+});
+
+const Professor = mongoose.model("Professor", ProfessorSchema);
+
+
 /* =========================
    🚀 ROTAS
 ========================= */
+
+// 👨‍🏫 Professor Register
+app.post("/professores/register", async (req, res) => {
+  try {
+    const { nome, email, senha, ativo } = req.body;
+
+    // Verifica se já existe
+    const existe = await Professor.findOne({ email });
+    if (existe) {
+      return res.json({ erro: "Email já cadastrado" });
+    }
+
+    // Criptografar senha
+    const senhaHash = await bcrypt.hash(senha, 10);
+
+    const professor = await Professor.create({
+      nome,
+      email,
+      senha: senhaHash,
+      ativo: ativo ?? true // se não mandar, fica true
+    });
+
+    res.json({
+      mensagem: "Professor criado com sucesso!",
+      professorId: professor._id
+    });
+
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
 
 
 app.post("/alunos/register", async (req, res) => {
@@ -101,6 +144,16 @@ app.post("/alunos/login", async (req, res) => {
 
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+// 📌 Listar professores
+app.get("/professores", async (req, res) => {
+  try {
+    const professores = await Professor.find();
+    res.json(professores);
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
   }
 });
 
