@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 const app = express();
 
@@ -27,14 +28,13 @@ const Curso = mongoose.model("Curso", CursoSchema);
 const DisciplinaSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   semestre: { type: Number, required: true },
+  cargaHoraria: { type: Number, required: true }, // 🔥 usado para limite de faltas
   curso: { type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true }
 });
 
 const Disciplina = mongoose.model("Disciplina", DisciplinaSchema);
 
-// Aluno
-const bcrypt = require("bcrypt");
-
+// 👨‍🎓 Aluno
 const AlunoSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -44,17 +44,57 @@ const AlunoSchema = new mongoose.Schema({
 
 const Aluno = mongoose.model("Aluno", AlunoSchema);
 
-// Professor
-
+// 👨‍🏫 Professor
 const ProfessorSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   senha: { type: String, required: true },
-  ativo: { type: Boolean, required: true },
+  ativo: { type: Boolean, required: true }
 });
 
 const Professor = mongoose.model("Professor", ProfessorSchema);
 
+/* =========================
+   📝 MATRÍCULA PROFISSIONAL
+========================= */
+
+const MatriculaSchema = new mongoose.Schema({
+  aluno: { type: mongoose.Schema.Types.ObjectId, ref: "Aluno", required: true },
+  disciplina: { type: mongoose.Schema.Types.ObjectId, ref: "Disciplina", required: true },
+  nota1: { type: Number, default: 0 },
+  nota2: { type: Number, default: 0 },
+  media: { type: Number, default: 0 },
+  faltas: { type: Number, default: 0 },
+  status: { type: String, default: "Cursando" }
+});
+
+const Matricula = mongoose.model("Matricula", MatriculaSchema);
+
+/* =========================
+   🎯 FUNÇÃO AUTOMÁTICA
+========================= */
+
+async function atualizarSituacao(matriculaId) {
+  const matricula = await Matricula.findById(matriculaId).populate("disciplina");
+
+  const media = (matricula.nota1 + matricula.nota2) / 2;
+  const limiteFaltas = matricula.disciplina.cargaHoraria * 0.25;
+
+  let status = "Cursando";
+
+  if (matricula.faltas > limiteFaltas) {
+    status = "Reprovado por Falta";
+  } else if (media >= 7) {
+    status = "Aprovado";
+  } else {
+    status = "Reprovado por Nota";
+  }
+
+  matricula.media = media;
+  matricula.status = status;
+
+  await matricula.save();
+}
 
 /* =========================
    🚀 ROTAS
@@ -65,20 +105,18 @@ app.post("/professores/register", async (req, res) => {
   try {
     const { nome, email, senha, ativo } = req.body;
 
-    // Verifica se já existe
     const existe = await Professor.findOne({ email });
     if (existe) {
       return res.json({ erro: "Email já cadastrado" });
     }
 
-    // Criptografar senha
     const senhaHash = await bcrypt.hash(senha, 10);
 
     const professor = await Professor.create({
       nome,
       email,
       senha: senhaHash,
-      ativo: ativo ?? true // se não mandar, fica true
+      ativo: ativo ?? true
     });
 
     res.json({
@@ -91,21 +129,19 @@ app.post("/professores/register", async (req, res) => {
   }
 });
 
-
+// 👨‍🎓 Aluno Register
 app.post("/alunos/register", async (req, res) => {
   try {
     const { nome, email, senha, curso } = req.body;
 
-    // Verifica se já existe
     const existe = await Aluno.findOne({ email });
     if (existe) {
       return res.json({ erro: "Email já cadastrado" });
     }
 
-    // Criptografar senha
     const senhaHash = await bcrypt.hash(senha, 10);
 
-    const aluno = await Aluno.create({
+    await Aluno.create({
       nome,
       email,
       senha: senhaHash,
@@ -119,70 +155,176 @@ app.post("/alunos/register", async (req, res) => {
   }
 });
 
+// 🔐 Login aluno
 app.post("/alunos/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
 
     const aluno = await Aluno.findOne({ email }).populate("curso");
 
-    if (!aluno) {
-      return res.json({ sucesso: false });
-    }
+    if (!aluno) return res.json({ sucesso: false });
 
     const senhaCorreta = await bcrypt.compare(senha, aluno.senha);
 
-    if (!senhaCorreta) {
-      return res.json({ sucesso: false });
-    }
+    if (!senhaCorreta) return res.json({ sucesso: false });
 
     res.json({
-  sucesso: true,
-  nome: aluno.nome,
-  alunoId: aluno._id,   // 🔥 ADICIONA ISSO
-  curso: aluno.curso.nome
-});
+      sucesso: true,
+      nome: aluno.nome,
+      alunoId: aluno._id,
+      curso: aluno.curso.nome
+    });
 
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// 📌 Listar professores
-app.get("/professores", async (req, res) => {
+/* =========================
+   📝 MATRÍCULA ROTAS
+========================= */
+
+// Matricular aluno
+app.post("/matricular", async (req, res) => {
   try {
-    const professores = await Professor.find();
-    res.json(professores);
+    const { alunoId, disciplinaId } = req.body;
+
+    const existe = await Matricula.findOne({
+      aluno: alunoId,
+      disciplina: disciplinaId
+    });
+
+    if (existe) {
+      return res.json({ erro: "Aluno já matriculado" });
+    }
+
+    await Matricula.create({
+      aluno: alunoId,
+      disciplina: disciplinaId
+    });
+
+    res.json({ mensagem: "Matrícula realizada!" });
+
   } catch (error) {
-    res.status(500).json({ erro: error.message });
+    res.status(500).json(error);
   }
 });
 
-// Listar alunos com curso
+// Lançar notas
+app.put("/matricula/notas", async (req, res) => {
+  try {
+    const { matriculaId, nota1, nota2 } = req.body;
+
+    await Matricula.findByIdAndUpdate(matriculaId, { nota1, nota2 });
+
+    await atualizarSituacao(matriculaId);
+
+    res.json({ mensagem: "Notas atualizadas!" });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// Lançar faltas
+app.put("/matricula/faltas", async (req, res) => {
+  try {
+    const { matriculaId, faltas } = req.body;
+
+    await Matricula.findByIdAndUpdate(matriculaId, { faltas });
+
+    await atualizarSituacao(matriculaId);
+
+    res.json({ mensagem: "Faltas atualizadas!" });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// 📊 Boletim completo
+app.get("/boletim/:alunoId", async (req, res) => {
+  try {
+    const boletim = await Matricula.find({
+      aluno: req.params.alunoId
+    }).populate("disciplina");
+
+    res.json(boletim);
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+/* =========================
+   📚 LISTAGENS ORIGINAIS
+========================= */
+
+app.get("/professores", async (req, res) => {
+  const professores = await Professor.find();
+  res.json(professores);
+});
+
 app.get("/alunos", async (req, res) => {
   const alunos = await Aluno.find().populate("curso");
   res.json(alunos);
 });
 
-// Listar cursos
 app.get("/cursos", async (req, res) => {
   const cursos = await Curso.find();
   res.json(cursos);
 });
 
-// Listar disciplinas de um curso
 app.get("/disciplinas/:cursoId", async (req, res) => {
   const disciplinas = await Disciplina.find({ curso: req.params.cursoId });
   res.json(disciplinas);
 });
 
+/* =========================
+   🎓 MATRIZ CURRICULAR ORIGINAL
+========================= */
+
+app.get("/matriz/:alunoId", async (req, res) => {
+  try {
+    const aluno = await Aluno.findById(req.params.alunoId).populate("curso");
+
+    if (!aluno) {
+      return res.status(404).json({ erro: "Aluno não encontrado" });
+    }
+
+    const disciplinas = await Disciplina.find({
+      curso: aluno.curso._id
+    }).sort({ semestre: 1 });
+
+    const matriz = {};
+
+    disciplinas.forEach((disc) => {
+      if (!matriz[disc.semestre]) {
+        matriz[disc.semestre] = [];
+      }
+      matriz[disc.semestre].push(disc);
+    });
+
+    res.json({
+      aluno: aluno.nome,
+      curso: aluno.curso.nome,
+      matriz
+    });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+/* =========================
+   🌱 SEED ATUALIZADO
+========================= */
+
 app.get("/seed", async (req, res) => {
   try {
-
-    // 🔥 Apagar dados antigos (para não duplicar)
     await Curso.deleteMany();
     await Disciplina.deleteMany();
 
-    // 📚 Criar cursos
     const eng = await Curso.create({
       nome: "Engenharia da Computação",
       duracaoSemestres: 10
@@ -193,61 +335,13 @@ app.get("/seed", async (req, res) => {
       duracaoSemestres: 12
     });
 
-    // 📖 Disciplinas Engenharia
     await Disciplina.create([
-      { nome: "Cálculo I", semestre: 1, curso: eng._id },
-      { nome: "Lógica de Programação", semestre: 1, curso: eng._id },
-      { nome: "Estrutura de Dados", semestre: 2, curso: eng._id },
-      { nome: "Física I", semestre: 2, curso: eng._id }
-    ]);
-
-    // 🏥 Disciplinas Medicina
-    await Disciplina.create([
-      { nome: "Anatomia I", semestre: 1, curso: med._id },
-      { nome: "Biologia Celular", semestre: 1, curso: med._id },
-      { nome: "Fisiologia I", semestre: 2, curso: med._id },
-      { nome: "Histologia", semestre: 2, curso: med._id }
+      { nome: "Cálculo I", semestre: 1, cargaHoraria: 80, curso: eng._id },
+      { nome: "Lógica de Programação", semestre: 1, cargaHoraria: 60, curso: eng._id },
+      { nome: "Anatomia I", semestre: 1, cargaHoraria: 100, curso: med._id }
     ]);
 
     res.json({ mensagem: "Banco populado com sucesso!" });
-
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-// 🎓 Matriz curricular do aluno
-app.get("/matriz/:alunoId", async (req, res) => {
-  try {
-    // 1️⃣ Buscar aluno e descobrir curso dele
-    const aluno = await Aluno.findById(req.params.alunoId).populate("curso");
-
-    if (!aluno) {
-      return res.status(404).json({ erro: "Aluno não encontrado" });
-    }
-
-    // 2️⃣ Buscar disciplinas do curso do aluno
-    const disciplinas = await Disciplina.find({
-      curso: aluno.curso._id
-    }).sort({ semestre: 1 });
-
-    // 3️⃣ Agrupar por semestre
-    const matriz = {};
-
-    disciplinas.forEach((disc) => {
-      if (!matriz[disc.semestre]) {
-        matriz[disc.semestre] = [];
-      }
-
-      matriz[disc.semestre].push(disc);
-    });
-
-    // 4️⃣ Retornar organizado
-    res.json({
-      aluno: aluno.nome,
-      curso: aluno.curso.nome,
-      matriz
-    });
 
   } catch (error) {
     res.status(500).json(error);

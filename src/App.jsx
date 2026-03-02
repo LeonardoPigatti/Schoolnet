@@ -5,6 +5,8 @@ import Calendar from "./Calendar";
 import InstitutionalDocuments from "./InstitutionalDocuments";
 import CurriculumMatrix from "./CurriculumMatrix";
 import ListTeacher from "./ListTeacher";
+import BoletimSemestre from "./BoletimSemestre";
+
 
 
 import "./App.css";
@@ -46,6 +48,15 @@ function BemVindo({ usuario, onSair }) {
           path="/professores"
           element={<ListTeacher userId={usuario?.alunoId} />}
         />
+          <Route
+          path="/notas"
+          element={
+  <BoletimSemestre
+    alunoId={usuario?.alunoId}
+    semestre={1}
+  />
+}
+        />
       </Routes>
     </div>
   );
@@ -77,6 +88,7 @@ function Login({ onLogin }) {
       } else {
         setErro("Usuário ou senha incorretos!");
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setErro("Erro ao conectar com o servidor!");
     }
