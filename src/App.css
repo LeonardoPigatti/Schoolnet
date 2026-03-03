@@ -38,3 +38,87 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Layout principal */
+.pagina {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: white;
+}
+
+.conteudo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Login */
+.container-login {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f4f8;
+}
+
+/* Card */
+.card {
+  background-color: #fff;
+  padding: 48px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+/* Tipografia */
+.titulo {
+  color: #4a7fa5;
+  font-weight: 300;
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.subtitulo {
+  color: #888;
+  font-size: 1rem;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input {
+  padding: 14px 16px;
+  border: 1.5px solid #d0e0f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #555;
+  outline: none;
+}
+
+.botao {
+  margin-top: 8px;
+  padding: 14px;
+  background-color: #4a7fa5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.erro {
+  color: #e05555;
+  font-size: 0.9rem;
+  margin: 0;
+}

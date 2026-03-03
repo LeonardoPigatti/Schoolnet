@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Navbar from "./Navbar";
 import Calendar from "./Calendar";
 import InstitutionalDocuments from "./InstitutionalDocuments";
@@ -10,78 +11,11 @@ import HorarioAluno from "./HorarioAluno";
 import ExtratoFinanceiro from "./ExtratoFinanceiro";
 import PagFacil from "./PagFacil";
 
-
-
-
-
 import "./App.css";
 
-function BemVindo({ usuario, onSair }) {
-  return (
-    <div style={styles.pagina}>
-      <Navbar usuario={usuario.nome} onSair={onSair} />
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div style={styles.conteudo}>
-              <div style={styles.card}>
-                <h1 style={styles.titulo}>
-                  Bem-vindo, {usuario.nome}! 👋
-                </h1>
-                <p style={styles.subtitulo}>
-                  Você está logado com sucesso.
-                </p>
-              </div>
-            </div>
-          }
-        />
-
-        <Route path="/calendarioacademico" element={<Calendar />} />
-        <Route
-          path="/documentosinstitucionais"
-          element={<InstitutionalDocuments />}
-        />
-
-        {/* ✅ CORRIGIDO */}
-        <Route
-          path="/matrizcurricular"
-          element={<CurriculumMatrix userId={usuario?.alunoId} />}
-        />
-        <Route
-          path="/professores"
-          element={<ListTeacher userId={usuario?.alunoId} />}
-        />
-
-          <Route
-  path="/horario"
-  element={<HorarioAluno alunoId={usuario?.alunoId} />}
-/>
-
-<Route
-  path="/pagfacil"
-  element={<PagFacil alunoId={usuario?.alunoId} />}
-/>
-
-<Route
-  path="/financeiro"
-  element={<ExtratoFinanceiro alunoId={usuario?.alunoId} />}
-/>
-
-          <Route
-          path="/notas"
-          element={
-  <BoletimSemestre
-    alunoId={usuario?.alunoId}
-    semestre={1}
-  />
-}
-        />
-      </Routes>
-    </div>
-  );
-}
+/* ============================= */
+/*        COMPONENTE LOGIN       */
+/* ============================= */
 
 function Login({ onLogin }) {
   const [usuario, setUsuario] = useState("");
@@ -101,7 +35,6 @@ function Login({ onLogin }) {
       const dados = await resposta.json();
 
       if (dados.sucesso) {
-        // ✅ Agora salva nome + alunoId
         onLogin({
           nome: dados.nome,
           alunoId: dados.alunoId,
@@ -109,20 +42,19 @@ function Login({ onLogin }) {
       } else {
         setErro("Usuário ou senha incorretos!");
       }
-    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setErro("Erro ao conectar com o servidor!");
     }
   }
 
   return (
-    <div style={styles.containerLogin}>
-      <div style={styles.card}>
-        <h1 style={styles.titulo}>Autenticação</h1>
+    <div className="container-login">
+      <div className="card">
+        <h1 className="titulo">Autenticação</h1>
 
-        <form onSubmit={handleLogin} style={styles.form}>
+        <form onSubmit={handleLogin} className="form">
           <input
-            style={styles.input}
+            className="input"
             type="text"
             placeholder="Usuário"
             value={usuario}
@@ -130,16 +62,16 @@ function Login({ onLogin }) {
           />
 
           <input
-            style={styles.input}
+            className="input"
             type="password"
             placeholder="Senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />
 
-          {erro && <p style={styles.erro}>{erro}</p>}
+          {erro && <p className="erro">{erro}</p>}
 
-          <button style={styles.botao} type="submit">
+          <button className="botao" type="submit">
             Entrar
           </button>
         </form>
@@ -147,6 +79,81 @@ function Login({ onLogin }) {
     </div>
   );
 }
+
+/* ============================= */
+/*      COMPONENTE LOGADO        */
+/* ============================= */
+
+function BemVindo({ usuario, onSair }) {
+  return (
+    <div className="pagina">
+      <Navbar usuario={usuario.nome} onSair={onSair} />
+
+      <div className="conteudo">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="card">
+                <h1 className="titulo">
+                  Bem-vindo, {usuario.nome}! 👋
+                </h1>
+                <p className="subtitulo">
+                  Você está logado com sucesso.
+                </p>
+              </div>
+            }
+          />
+
+          <Route path="/calendarioacademico" element={<Calendar />} />
+          <Route
+            path="/documentosinstitucionais"
+            element={<InstitutionalDocuments />}
+          />
+
+          <Route
+            path="/matrizcurricular"
+            element={<CurriculumMatrix userId={usuario?.alunoId} />}
+          />
+
+          <Route
+            path="/professores"
+            element={<ListTeacher userId={usuario?.alunoId} />}
+          />
+
+          <Route
+            path="/horario"
+            element={<HorarioAluno alunoId={usuario?.alunoId} />}
+          />
+
+          <Route
+            path="/pagfacil"
+            element={<PagFacil alunoId={usuario?.alunoId} />}
+          />
+
+          <Route
+            path="/financeiro"
+            element={<ExtratoFinanceiro alunoId={usuario?.alunoId} />}
+          />
+
+          <Route
+            path="/notas"
+            element={
+              <BoletimSemestre
+                alunoId={usuario?.alunoId}
+                semestre={1}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+/* ============================= */
+/*             APP               */
+/* ============================= */
 
 function App() {
   const [usuarioLogado, setUsuarioLogado] = useState(() => {
@@ -174,82 +181,5 @@ function App() {
     </Router>
   );
 }
-
-const styles = {
-  pagina: {
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",
-    width: "100vw",
-    backgroundColor: "white",
-  },
-  conteudo: {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  containerLogin: {
-    minHeight: "100vh",
-    width: "100vw",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f0f4f8",
-  },
-  card: {
-    backgroundColor: "#fff",
-    padding: "48px 40px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-    width: "100%",
-    maxWidth: "420px",
-    textAlign: "center",
-  },
-  titulo: {
-    color: "#4a7fa5",
-    fontWeight: 300,
-    fontSize: "2rem",
-    marginBottom: "16px",
-    fontFamily: "sans-serif",
-  },
-  subtitulo: {
-    color: "#888",
-    fontSize: "1rem",
-    fontFamily: "sans-serif",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "16px",
-  },
-  input: {
-    padding: "14px 16px",
-    border: "1.5px solid #d0e0f0",
-    borderRadius: "8px",
-    fontSize: "1rem",
-    color: "#555",
-    outline: "none",
-    fontFamily: "sans-serif",
-  },
-  botao: {
-    marginTop: "8px",
-    padding: "14px",
-    backgroundColor: "#4a7fa5",
-    color: "#fff",
-    border: "none",
-    borderRadius: "8px",
-    fontSize: "1rem",
-    cursor: "pointer",
-    fontFamily: "sans-serif",
-    width: "100%",
-  },
-  erro: {
-    color: "#e05555",
-    fontSize: "0.9rem",
-    fontFamily: "sans-serif",
-    margin: 0,
-  },
-};
 
 export default App;
