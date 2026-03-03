@@ -10,6 +10,8 @@ import BoletimSemestre from "./pages/BoletimSemestre/BoletimSemestre";
 import HorarioAluno from "./pages/HorarioAluno/HorarioAluno";
 import ExtratoFinanceiro from "./pages/ExtratoFinanceiro/ExtratoFinanceiro";
 import PagFacil from "./pages/PagFacil/PagFacil";
+import AtividadesComplementares from "./pages/AtividadesComplementares/AtividadesComplementares";
+
 
 
 import "./App.css";
@@ -136,6 +138,11 @@ function BemVindo({ usuario, onSair }) {
           <Route
             path="/financeiro"
             element={<ExtratoFinanceiro alunoId={usuario?.alunoId} />}
+          />
+
+          <Route
+            path="/AtividadesComplementares"
+            element={<AtividadesComplementares alunoId={usuario?.alunoId} />}
           />
 
           <Route

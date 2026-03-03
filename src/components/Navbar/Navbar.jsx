@@ -48,7 +48,6 @@ function Navbar({ usuario, onSair }) {
       "Atividades Complementares",
       "Estágio",
       "TCC",
-      "Apoio à Pesquisa",
     ],
     requerimentos: [
       "Diploma",
