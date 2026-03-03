@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Navbar from "./Navbar";
-import Calendar from "./Calendar";
-import InstitutionalDocuments from "./InstitutionalDocuments";
-import CurriculumMatrix from "./CurriculumMatrix";
-import ListTeacher from "./ListTeacher";
-import BoletimSemestre from "./BoletimSemestre";
-import HorarioAluno from "./HorarioAluno";
-import ExtratoFinanceiro from "./ExtratoFinanceiro";
-import PagFacil from "./PagFacil";
+import Navbar from "./components/Navbar/Navbar";
+import Calendar from "./pages/Calendar/Calendar";
+import InstitutionalDocuments from "./pages/InstitutionalDocuments/InstitutionalDocuments";
+import CurriculumMatrix from "./pages/CurriculumMatrix/CurriculumMatrix";
+import ListTeacher from "./pages/ListTeacher/ListTeacher";
+import BoletimSemestre from "./pages/BoletimSemestre/BoletimSemestre";
+import HorarioAluno from "./pages/HorarioAluno/HorarioAluno";
+import ExtratoFinanceiro from "./pages/ExtratoFinanceiro/ExtratoFinanceiro";
+import PagFacil from "./pages/PagFacil/PagFacil";
+
 
 import "./App.css";
 
@@ -42,6 +43,7 @@ function Login({ onLogin }) {
       } else {
         setErro("Usuário ou senha incorretos!");
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setErro("Erro ao conectar com o servidor!");
     }
