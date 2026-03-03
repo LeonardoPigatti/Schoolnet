@@ -149,17 +149,27 @@ function Login({ onLogin }) {
 }
 
 function App() {
-  const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const [usuarioLogado, setUsuarioLogado] = useState(() => {
+    const salvo = localStorage.getItem("usuario");
+    return salvo ? JSON.parse(salvo) : null;
+  });
+
+  function handleLogin(dados) {
+    localStorage.setItem("usuario", JSON.stringify(dados));
+    setUsuarioLogado(dados);
+  }
+
+  function handleSair() {
+    localStorage.removeItem("usuario");
+    setUsuarioLogado(null);
+  }
 
   return (
     <Router>
       {usuarioLogado ? (
-        <BemVindo
-          usuario={usuarioLogado}
-          onSair={() => setUsuarioLogado(null)}
-        />
+        <BemVindo usuario={usuarioLogado} onSair={handleSair} />
       ) : (
-        <Login onLogin={(dados) => setUsuarioLogado(dados)} />
+        <Login onLogin={handleLogin} />
       )}
     </Router>
   );
