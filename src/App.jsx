@@ -13,6 +13,8 @@ import PagFacil from "./pages/PagFacil/PagFacil";
 import AtividadesComplementares from "./pages/AtividadesComplementares/AtividadesComplementares";
 import Estagio from "./pages/Estagio/Estagio.";
 import Requerimentos from "./pages/Requerimentos/Requerimentos";
+import Diploma from "./pages/Diploma/Diploma";
+
 
 
 
@@ -155,6 +157,7 @@ function BemVindo({ usuario, onSair }) {
 
 <Route path="/Requerimentos" element={<Requerimentos alunoId={usuario?.alunoId} />} />
 
+<Route path="/Diploma" element={<Diploma alunoId={usuario?.alunoId} />} />
           <Route
             path="/notas"
             element={
