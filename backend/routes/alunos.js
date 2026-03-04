@@ -16,5 +16,6 @@ router.post("/:alunoId/pagfacil", calcularBolsa);
 router.get("/:alunoId/financeiro", getFinanceiro);
 router.get("/:alunoId/matriz", getMatriz);
 router.get("/:alunoId/boletim", require("../controllers/matriculaController").getBoletim);
+router.patch("/:alunoId/senha", require("../controllers/alunoController").alterarSenha);
 
 module.exports = router;

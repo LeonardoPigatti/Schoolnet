@@ -19,6 +19,28 @@ const register = async (req, res) => {
   }
 };
 
+const alterarSenha = async (req, res) => {
+  try {
+    const { senhaAtual, novaSenha } = req.body;
+
+    const aluno = await Aluno.findById(req.params.alunoId);
+    if (!aluno) return res.status(404).json({ erro: "Aluno não encontrado" });
+
+    const senhaCorreta = await bcrypt.compare(senhaAtual, aluno.senha);
+    if (!senhaCorreta) return res.status(401).json({ erro: "Senha atual incorreta" });
+
+    if (novaSenha.length < 6) return res.status(400).json({ erro: "A nova senha deve ter pelo menos 6 caracteres" });
+
+    const senhaHash = await bcrypt.hash(novaSenha, 10);
+    await Aluno.findByIdAndUpdate(req.params.alunoId, { senha: senhaHash });
+
+    res.json({ mensagem: "Senha alterada com sucesso!" });
+  } catch {
+    res.status(500).json({ erro: "Erro ao alterar senha" });
+  }
+};
+
+
 const login = async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -117,4 +139,4 @@ const getMatriz = async (req, res) => {
   }
 };
 
-module.exports = { register, login, listar, calcularBolsa, getFinanceiro, getMatriz };
+module.exports = { register, login, listar, calcularBolsa, getFinanceiro, getMatriz, alterarSenha };

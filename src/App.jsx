@@ -15,6 +15,8 @@ import Estagio from "./pages/Estagio/Estagio.";
 import Requerimentos from "./pages/Requerimentos/Requerimentos";
 import Diploma from "./pages/Diploma/Diploma";
 import TCC from "./pages/TCC/TCC";
+import AlterarSenha from "./pages/MudarSenha/MudarSenha";
+
 
 
 
@@ -146,6 +148,8 @@ function BemVindo({ usuario, onSair }) {
             path="/financeiro"
             element={<ExtratoFinanceiro alunoId={usuario?.alunoId} />}
           />
+
+          <Route path="/AlterarSenha" element={<AlterarSenha alunoId={usuario?.alunoId} />} />
 
           <Route
             path="/AtividadesComplementares"
