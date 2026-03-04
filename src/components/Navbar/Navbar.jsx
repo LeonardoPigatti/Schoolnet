@@ -33,6 +33,7 @@ function Navbar({ usuario, onSair }) {
     "TCC":                       "/TCC",
     "Diploma":                   "/Diploma",
     "Documentos":                "/Requerimentos",
+    "Certificados":              "/Certificados",
   };
 
   const menus = {
