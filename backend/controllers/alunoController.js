@@ -117,6 +117,60 @@ const getFinanceiro = async (req, res) => {
   }
 };
 
+const getPerfil = async (req, res) => {
+  try {
+    const aluno = await Aluno.findById(req.params.alunoId).populate("curso");
+    if (!aluno) return res.status(404).json({ erro: "Aluno não encontrado" });
+
+    const matriculas = await Matricula.find({ aluno: req.params.alunoId }).populate("disciplina");
+    const totalDisciplinas = matriculas.length;
+    const aprovadas = matriculas.filter(m => m.nota >= 5).length;
+    const mediaGeral = totalDisciplinas
+      ? (matriculas.reduce((a, m) => a + (m.nota || 0), 0) / totalDisciplinas).toFixed(1)
+      : null;
+    const totalAulas = matriculas.reduce((a, m) => a + (m.disciplina?.cargaHoraria || 0), 0);
+    const totalFaltas = matriculas.reduce((a, m) => a + (m.faltas || 0), 0);
+    const frequencia = totalAulas > 0 ? (((totalAulas - totalFaltas) / totalAulas) * 100).toFixed(1) : null;
+
+    const Estagio = require("../models/Estagio");
+    const TCC = require("../models/TCC");
+    const AtividadeComplementar = require("../models/AtividadeComplementar");
+
+    const estagio = await Estagio.findOne({ aluno: req.params.alunoId });
+    const tcc = await TCC.findOne({ aluno: req.params.alunoId });
+    const atividades = await AtividadeComplementar.find({ aluno: req.params.alunoId });
+    const horasAC = atividades.reduce((a, x) => a + x.cargaHoraria, 0);
+    const horasAprovadas = atividades.filter(a => a.status === "Aprovada").reduce((a, x) => a + x.cargaHoraria, 0);
+
+    res.json({
+      nome: aluno.nome,
+      email: aluno.email,
+      curso: aluno.curso?.nome,
+      foto: aluno.foto,
+      academico: { totalDisciplinas, aprovadas, mediaGeral, frequencia },
+      estagio: { status: estagio?.status || null, empresa: estagio?.empresa?.nome || null },
+      tcc: { status: tcc?.status || null, titulo: tcc?.titulo || null },
+      atividadesComplementares: { total: atividades.length, horasAC, horasAprovadas },
+    });
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao buscar perfil" });
+  }
+};
+
+const editarPerfil = async (req, res) => {
+  try {
+    const { nome, foto } = req.body;
+    const aluno = await Aluno.findByIdAndUpdate(
+      req.params.alunoId,
+      { ...(nome && { nome }), ...(foto !== undefined && { foto }) },
+      { new: true }
+    ).populate("curso");
+    res.json({ mensagem: "Perfil atualizado!", nome: aluno.nome, foto: aluno.foto });
+  } catch {
+    res.status(500).json({ erro: "Erro ao atualizar perfil" });
+  }
+};
+
 const getMatriz = async (req, res) => {
   try {
     const aluno = await Aluno.findById(req.params.alunoId).populate("curso");
@@ -139,4 +193,4 @@ const getMatriz = async (req, res) => {
   }
 };
 
-module.exports = { register, login, listar, calcularBolsa, getFinanceiro, getMatriz, alterarSenha };
+module.exports = { register, login, listar, calcularBolsa, getFinanceiro, getMatriz, alterarSenha, getPerfil, editarPerfil };

@@ -25,10 +25,8 @@ function Navbar({ usuario, onSair }) {
       "Ocorrências",
       "Perfil",
       "Mentor",
-      "E-mail",
       "Mensagens",
       "Meus Cursos",
-      "Sistemas",
       "Sair",
     ],
     secretaria: [

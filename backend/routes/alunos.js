@@ -17,5 +17,7 @@ router.get("/:alunoId/financeiro", getFinanceiro);
 router.get("/:alunoId/matriz", getMatriz);
 router.get("/:alunoId/boletim", require("../controllers/matriculaController").getBoletim);
 router.patch("/:alunoId/senha", require("../controllers/alunoController").alterarSenha);
+router.get("/:alunoId/perfil", require("../controllers/alunoController").getPerfil);
+router.patch("/:alunoId/perfil", require("../controllers/alunoController").editarPerfil);
 
 module.exports = router;

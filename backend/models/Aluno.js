@@ -6,6 +6,8 @@ const AlunoSchema = new mongoose.Schema({
   senha: { type: String, required: true },
   curso: { type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true },
   bolsa: { type: Number, default: 0 },
+  foto: { type: String, default: null },
+
 });
 
 module.exports = mongoose.model("Aluno", AlunoSchema);

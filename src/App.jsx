@@ -17,7 +17,7 @@ import Diploma from "./pages/Diploma/Diploma";
 import TCC from "./pages/TCC/TCC";
 import AlterarSenha from "./pages/MudarSenha/MudarSenha";
 import CreditoImpressao from "./pages/CreditosImpressora/CreditosImpressora";
-
+import PerfilAluno from "./pages/PerfilAluno/PerfilAluno";
 
 
 
@@ -125,6 +125,9 @@ function BemVindo({ usuario, onSair }) {
             path="/documentosinstitucionais"
             element={<InstitutionalDocuments />}
           />
+
+          <Route path="/Perfil" element={<PerfilAluno alunoId={usuario?.alunoId} />} />
+
 
           <Route path="/Impressao" element={<CreditoImpressao alunoId={usuario?.alunoId} />} />
 
