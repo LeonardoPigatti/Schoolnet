@@ -19,6 +19,8 @@ import AlterarSenha from "./pages/MudarSenha/MudarSenha";
 import CreditoImpressao from "./pages/CreditosImpressora/CreditosImpressora";
 import PerfilAluno from "./pages/PerfilAluno/PerfilAluno";
 import Certificados from "./pages/Certificados/Certificados";
+import Ocorrencias from "./pages/Ocorrencia/Ocorrencia";
+
 
 
 
@@ -124,6 +126,8 @@ function BemVindo({ usuario, onSair }) {
 
           <Route path="/Certificados" element={<Certificados alunoId={usuario?.alunoId} />} />
 
+
+            <Route path="/Ocorrencias" element={<Ocorrencias alunoId={usuario?.alunoId} />} />
 
           <Route path="/calendarioacademico" element={<Calendar />} />
           <Route

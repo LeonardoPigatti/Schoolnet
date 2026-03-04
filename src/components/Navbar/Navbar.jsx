@@ -34,6 +34,7 @@ function Navbar({ usuario, onSair }) {
     "Diploma":                   "/Diploma",
     "Documentos":                "/Requerimentos",
     "Certificados":              "/Certificados",
+    "Ocorrências":               "/Ocorrencias",
   };
 
   const menus = {
