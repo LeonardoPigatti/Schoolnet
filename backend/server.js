@@ -30,6 +30,7 @@ app.use("/alunos/:alunoId/atividades", require("./routes/atividadeRoutes"));
 app.use("/alunos/:alunoId/estagio", require("./routes/estagioRoutes"));
 app.use("/alunos/:alunoId/requerimentos", require("./routes/requerimentoRoutes"));
 app.use("/alunos/:alunoId/tcc", require("./routes/tccRoutes"));
+app.use("/alunos/:alunoId/creditos", require("./routes/creditoRoutes"));
 
 // 🔁 Rotas legadas (compatibilidade com frontend antigo)
 app.get("/matriz/:alunoId", getMatriz);
