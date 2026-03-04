@@ -29,6 +29,7 @@ app.get("/seed", seed);
 app.use("/alunos/:alunoId/atividades", require("./routes/atividadeRoutes"));
 app.use("/alunos/:alunoId/estagio", require("./routes/estagioRoutes"));
 app.use("/alunos/:alunoId/requerimentos", require("./routes/requerimentoRoutes"));
+app.use("/alunos/:alunoId/tcc", require("./routes/tccRoutes"));
 
 // 🔁 Rotas legadas (compatibilidade com frontend antigo)
 app.get("/matriz/:alunoId", getMatriz);

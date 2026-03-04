@@ -14,6 +14,8 @@ import AtividadesComplementares from "./pages/AtividadesComplementares/Atividade
 import Estagio from "./pages/Estagio/Estagio.";
 import Requerimentos from "./pages/Requerimentos/Requerimentos";
 import Diploma from "./pages/Diploma/Diploma";
+import TCC from "./pages/TCC/TCC";
+
 
 
 
@@ -154,6 +156,9 @@ function BemVindo({ usuario, onSair }) {
   path="/Estagio"
   element={<Estagio alunoId={usuario?.alunoId} />}
 />
+
+<Route path="/TCC" element={<TCC alunoId={usuario?.alunoId} />} />
+
 
 <Route path="/Requerimentos" element={<Requerimentos alunoId={usuario?.alunoId} />} />
 
