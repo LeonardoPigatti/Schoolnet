@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --azul: #2563eb;
+  --azul-hover: #1d4ed8;
+  --cinza-borda: #d1d5db;
+  --cinza-input: #f9fafb;
+  --texto: #1f2937;
+  --muted: #6b7280;
+  --erro: #dc2626;
+  --branco: #ffffff;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--branco);
+  overflow: hidden;
+}
+
+/* ── Painel esquerdo — imagem ── */
+.login-image-panel {
+  width: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.login-image-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75); /* intensidade do filtro */
+  pointer-events: none;
+}
+
+.login-image-panel video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.login-image-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Painel direito ── */
+.login-form-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* ── Relógio ── */
+.login-clock {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: black;
+  font-size: 0.84rem;
+}
+
+.login-clock svg {
+  width: 15px;
+  height: 15px;
+  stroke: black;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Conteúdo ── */
+.login-form-content {
+  margin: auto;
+  width: 100%;
+  max-width: 370px;
+  padding: 80px 24px 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Labels de seção ── */
+.login-section-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* ── Dropdown ── */
+.perfil-select-wrapper {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.perfil-select {
+  width: 100%;
+  padding: 11px 40px 11px 14px;
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 6px;
+  background: var(--cinza-input);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--texto);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.perfil-select:focus {
+  border-color: var(--azul);
+}
+
+.perfil-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--azul);
+  display: flex;
+  align-items: center;
+}
+
+.perfil-arrow svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--azul);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Inputs ── */
+.input-field {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 6px;
+  background: var(--cinza-input);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--texto);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  display: block;
+}
+
+.input-field + .input-field {
+  margin-top: 10px;
+}
+
+.input-field::placeholder { color: #9ca3af; }
+
+.input-field:focus {
+  border-color: var(--azul);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ── Esqueci senha ── */
+.link-esqueci {
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.link-esqueci:hover { color: var(--azul); }
+
+/* ── Erro ── */
+.login-erro {
+  background: rgba(220, 38, 38, 0.07);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  border-radius: 6px;
+  color: var(--erro);
+  font-size: 0.82rem;
+  padding: 9px 12px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* ── Botão login ── */
+.botao-login {
+  width: 100%;
+  padding: 14px;
+  background-color: black;
+  color: var(--branco);
+  border: none;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 22px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.botao-login:hover {
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+.botao-login:active { transform: translateY(0); }
+
+/* ── Divisor ── */
+.divisor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: var(--cinza-borda);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.divisor::before,
+.divisor::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cinza-borda);
+}
+
+/* ── Botão Google ── */
+.botao-google {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #3c4043;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.botao-google:hover {
+  border-color: #aaa;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.botao-google svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* ── Rodapé ── */
+.login-footer {
+  text-align: center;
+  font-size: 0.77rem;
+  color: black;
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .login-image-panel { display: none; }
+}
