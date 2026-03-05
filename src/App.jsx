@@ -20,6 +20,8 @@ import CreditoImpressao from "./pages/CreditosImpressora/CreditosImpressora";
 import PerfilAluno from "./pages/PerfilAluno/PerfilAluno";
 import Certificados from "./pages/Certificados/Certificados";
 import Ocorrencias from "./pages/Ocorrencia/Ocorrencia";
+import PerguntasFrequentes from "./pages/Faq/Faq";
+
 
 
 
@@ -123,6 +125,9 @@ function BemVindo({ usuario, onSair }) {
               </div>
             }
           />
+
+          <Route path="/faq" element={<PerguntasFrequentes />} />
+
 
           <Route path="/Certificados" element={<Certificados alunoId={usuario?.alunoId} />} />
 
