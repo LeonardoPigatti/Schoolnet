@@ -1,7 +1,9 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar";
+import Login from "./components/Login/Login";
+import useAuth from "./hooks/useAuth";
+import Home from "./pages/Home/Home";
 import Calendar from "./pages/Calendar/Calendar";
 import InstitutionalDocuments from "./pages/InstitutionalDocuments/InstitutionalDocuments";
 import CurriculumMatrix from "./pages/CurriculumMatrix/CurriculumMatrix";
@@ -25,86 +27,6 @@ import Mensagens from "./pages/Mensagens/Mensagens";
 import RepositorioInstitucional from "./pages/Repositorio/Repositorio";
 
 import "./App.css";
-
-/* ============================= */
-/*           CONSTANTES          */
-/* ============================= */
-
-const API_URL = "http://localhost:5000";
-
-/* ============================= */
-/*        COMPONENTE LOGIN       */
-/* ============================= */
-
-function Login({ onLogin }) {
-  const [usuario, setUsuario] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
-
-  async function handleLogin(e) {
-    e.preventDefault();
-    try {
-      const resposta = await fetch(`${API_URL}/alunos/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: usuario, senha }),
-      });
-      const dados = await resposta.json();
-
-      if (dados.sucesso) {
-        onLogin({ nome: dados.nome, alunoId: dados.alunoId });
-      } else {
-        setErro("Usuário ou senha incorretos!");
-      }
-    // eslint-disable-next-line no-unused-vars
-    } catch (_) {
-      setErro("Erro ao conectar com o servidor!");
-    }
-  }
-
-  return (
-    <div className="container-login">
-      <div className="card">
-        <h1 className="titulo">Autenticação</h1>
-        <form onSubmit={handleLogin} className="form">
-          <input
-            className="input"
-            type="text"
-            placeholder="Usuário"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-          />
-          <input
-            className="input"
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-          {erro && <p className="erro">{erro}</p>}
-          <button className="botao" type="submit">Entrar</button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-/* ============================= */
-/*      HOME (ROTA PADRÃO)       */
-/* ============================= */
-
-function Home({ nome }) {
-  return (
-    <div className="card">
-      <h1 className="titulo">Bem-vindo, {nome}! 👋</h1>
-      <p className="subtitulo">Você está logado com sucesso.</p>
-    </div>
-  );
-}
-
-/* ============================= */
-/*        ROTAS DO ALUNO         */
-/* ============================= */
 
 function AppRoutes({ usuario }) {
   const id = usuario?.alunoId;
@@ -156,29 +78,6 @@ function AuthLayout({ usuario, onSair }) {
       </div>
     </div>
   );
-}
-
-/* ============================= */
-/*             APP               */
-/* ============================= */
-
-function useAuth() {
-  const [usuario, setUsuario] = useState(() => {
-    const salvo = localStorage.getItem("usuario");
-    return salvo ? JSON.parse(salvo) : null;
-  });
-
-  function login(dados) {
-    localStorage.setItem("usuario", JSON.stringify(dados));
-    setUsuario(dados);
-  }
-
-  function logout() {
-    localStorage.removeItem("usuario");
-    setUsuario(null);
-  }
-
-  return { usuario, login, logout };
 }
 
 export default function App() {
