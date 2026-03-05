@@ -33,6 +33,7 @@ app.use("/alunos/:alunoId/tcc", require("./routes/tccRoutes"));
 app.use("/alunos/:alunoId/creditos", require("./routes/creditoRoutes"));
 app.use("/alunos/:alunoId/certificados", require("./routes/certificadoRoutes"));
 app.use("/alunos/:alunoId/ocorrencias", require("./routes/ocorrenciaRoutes"));
+app.use("/alunos/:alunoId/mensagens", require("./routes/mensagemRoutes"));
 
 
 // 🔁 Rotas legadas (compatibilidade com frontend antigo)

@@ -36,6 +36,8 @@ function Navbar({ usuario, onSair }) {
     "Certificados":              "/Certificados",
     "Ocorrências":               "/Ocorrencias",
     "Perguntas Frequentes":      "/faq",
+    "Mensagens":                 "/Mensagens",
+
 
   };
 

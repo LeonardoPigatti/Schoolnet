@@ -21,6 +21,7 @@ import PerfilAluno from "./pages/PerfilAluno/PerfilAluno";
 import Certificados from "./pages/Certificados/Certificados";
 import Ocorrencias from "./pages/Ocorrencia/Ocorrencia";
 import PerguntasFrequentes from "./pages/Faq/Faq";
+import Mensagens from "./pages/Mensagens/Mensagens";
 
 
 
@@ -125,6 +126,9 @@ function BemVindo({ usuario, onSair }) {
               </div>
             }
           />
+
+          <Route path="/Mensagens" element={<Mensagens alunoId={usuario?.alunoId} />} />
+
 
           <Route path="/faq" element={<PerguntasFrequentes />} />
 
