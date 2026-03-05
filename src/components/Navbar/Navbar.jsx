@@ -37,6 +37,8 @@ function Navbar({ usuario, onSair }) {
     "Ocorrências":               "/Ocorrencias",
     "Perguntas Frequentes":      "/faq",
     "Mensagens":                 "/Mensagens",
+    "Repositório Institucional": "/repositorio",
+
 
 
   };

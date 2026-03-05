@@ -22,6 +22,8 @@ import Certificados from "./pages/Certificados/Certificados";
 import Ocorrencias from "./pages/Ocorrencia/Ocorrencia";
 import PerguntasFrequentes from "./pages/Faq/Faq";
 import Mensagens from "./pages/Mensagens/Mensagens";
+import RepositorioInstitucional from "./pages/Repositorio/Repositorio";
+
 
 
 
@@ -145,6 +147,9 @@ function BemVindo({ usuario, onSair }) {
           />
 
           <Route path="/Perfil" element={<PerfilAluno alunoId={usuario?.alunoId} />} />
+
+          <Route path="/repositorio" element={<RepositorioInstitucional />} />
+
 
 
           <Route path="/Impressao" element={<CreditoImpressao alunoId={usuario?.alunoId} />} />
