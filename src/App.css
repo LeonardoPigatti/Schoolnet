@@ -51,8 +51,7 @@
 .conteudo {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 /* Login */
@@ -121,4 +120,23 @@
   color: #e05555;
   font-size: 0.9rem;
   margin: 0;
+}
+
+thead {
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  border: 2px solid black;
+}
+
+table {
+  border: 1px solid black;
+}
+
+h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 2rem;
+  font-weight: 500; /* equilíbrio */
+  color: black;
+  letter-spacing: 0.01em;
 }

@@ -4,6 +4,7 @@ const DisciplinaSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   semestre: { type: Number, required: true },
   cargaHoraria: { type: Number, required: true },
+  tipo: { type: String, required: true, default: "Semanal" },
 
   horario: {
     dia: { type: String, required: true },
