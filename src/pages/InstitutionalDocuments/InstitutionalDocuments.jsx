@@ -11,7 +11,7 @@ function InstitutionalDocuments() {
 
   return (
     <div className="documents-container">
-      <h1 className="documents-title">Documentos Institucionais</h1>
+      <h1>Documentos Institucionais</h1>
 
       <h2 className="documents-subtitle">Documentação Disponível</h2>
 

@@ -71,24 +71,9 @@ function HorarioAluno({ alunoId }) {
       {/* ── Cabeçalho ── */}
       <div className="horario-header">
         <h1 className="horario-titulo">Horário de Aulas</h1>
-        {/* <p className="horario-periodo">Primeiro período de 2026</p> */}
       </div>
 
-      {/* ── Mapa dos Campi ── */}
-      {/* <div className="horario-campi-row">
-        <span className="campi-label">
-          <IconeMapa />
-          Mapa dos Campi:
-        </span>
-        <button className="campi-btn verde">
-          <IconePin />
-          Araras — Seu Campus
-        </button>
-        <button className="campi-btn azul">
-          <IconePin />
-          Santa Bárbara d'Oeste
-        </button>
-      </div> */}
+
 
       {/* ── Conteúdo ── */}
       {carregando ? (

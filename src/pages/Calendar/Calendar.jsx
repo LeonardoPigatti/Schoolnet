@@ -32,7 +32,8 @@ function Calendar() {
 
   return (
     <div className="calendar-container">
-      <h1 className="calendar-title">Calendário Acadêmico</h1>
+      <h1>Calendário Acadêmico</h1>
+      <br/>
 
       <div className="calendar-grid">
         {months.map((month, index) => (
@@ -95,4 +96,4 @@ function Calendar() {
 export default Calendar;
 
 // TODO Fazer o perfil do cordernador ajustar os dias de aula
-// TODO Melhorar o visual no final do dia
+// TODO MELHORAR A DIMENSÃO DA PAGINA

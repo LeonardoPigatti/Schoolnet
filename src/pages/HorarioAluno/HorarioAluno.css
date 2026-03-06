@@ -113,7 +113,7 @@ body {
   text-align: center;
   font-size: 1.15rem;
   font-weight: 400;
-  color: var(--texto);
+  color: black;
   margin-bottom: 12px;
   letter-spacing: 0.02em;
 }
