@@ -82,8 +82,14 @@ async function handleLogin(e) {
       {/* Painel direito — formulário */}
       <div className="login-form-panel">
         <Relogio />
+        
 
         <div className="login-form-content">
+
+            <img 
+    src="src\assets\brasao\brasao_hill.png" 
+    style={{ width: "250px", height: "auto", display: "block", margin: "0 auto 24px" }} 
+  />
           {/* Seletor de perfil */}
           <p className="login-section-label">Por favor, selecione seu perfil de acesso</p>
           <div className="perfil-select-wrapper">
