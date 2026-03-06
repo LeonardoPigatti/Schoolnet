@@ -53,6 +53,8 @@ async function handleLogin(e) {
         id: dados.alunoId ?? dados.professorId,
         perfil,
         tipoProfessor: dados.tipoProfessor ?? null,
+        cursoCoordenado: dados.cursoCoordenado ?? null,  // ← adiciona essa linha
+
       });
     } else {
       setErro(dados.erro ?? "Usuário ou senha incorretos.");

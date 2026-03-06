@@ -37,7 +37,7 @@ function AppRoutes({ usuario }) {
     { path: "/faq",                      element: <PerguntasFrequentes /> },
     { path: "/Certificados",             element: <Certificados alunoId={id} /> },
     { path: "/Ocorrencias",              element: <Ocorrencias alunoId={id} /> },
-    { path: "/calendarioacademico",      element: <Calendar /> },
+   { path: "/calendarioacademico",       element: <Calendar usuario={usuario} /> },
     { path: "/documentosinstitucionais", element: <InstitutionalDocuments usuario={usuario} /> },
     { path: "/Perfil",                   element: <PerfilAluno alunoId={id} /> },
     { path: "/repositorio",              element: <RepositorioInstitucional /> },

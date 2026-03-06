@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { conectar } = require("./config/database");
 const path = require("path");
+const calendarioRoutes = require("./routes/calendarioRoutes");
 
 const professoresRoutes = require("./routes/professores");
 const alunosRoutes = require("./routes/alunos");
@@ -39,6 +40,7 @@ app.use("/alunos/:alunoId/mensagens", require("./routes/mensagemRoutes"));
 app.use("/repositorio", require("./routes/repositorioRoutes"));
 app.use("/documentos-institucionais", documentoRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/calendario", calendarioRoutes);
 
 
 // 🔁 Rotas legadas (compatibilidade com frontend antigo)
