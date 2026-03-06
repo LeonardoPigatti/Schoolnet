@@ -36,26 +36,32 @@ export default function Login({ onLogin }) {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  async function handleLogin(e) {
-    e.preventDefault();
-    setErro("");
-    try {
-      const resposta = await fetch(`${API_URL}/alunos/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha, perfil }),
+async function handleLogin(e) {
+  e.preventDefault();
+  setErro("");
+  try {
+    const rota = perfil === "aluno" ? "alunos" : "professores";
+    const resposta = await fetch(`${API_URL}/${rota}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, senha }),
+    });
+    const dados = await resposta.json();
+    if (dados.sucesso) {
+      onLogin({
+        nome: dados.nome,
+        id: dados.alunoId ?? dados.professorId,
+        perfil,
+        tipoProfessor: dados.tipoProfessor ?? null,
       });
-      const dados = await resposta.json();
-      if (dados.sucesso) {
-        onLogin({ nome: dados.nome, alunoId: dados.alunoId, perfil });
-      } else {
-        setErro("Usuário ou senha incorretos.");
-      }
-    // eslint-disable-next-line no-unused-vars
-    } catch (_) {
-      setErro("Erro ao conectar com o servidor.");
+    } else {
+      setErro(dados.erro ?? "Usuário ou senha incorretos.");
     }
+  // eslint-disable-next-line no-unused-vars
+  } catch (_) {
+    setErro("Erro ao conectar com o servidor.");
   }
+}
 
   return (
     <div className="login-wrapper">
