@@ -32,28 +32,28 @@ function AppRoutes({ usuario }) {
   const id = usuario?.alunoId;
 
   const routes = [
-    { path: "/",                       element: <Home nome={usuario.nome} /> },
-    { path: "/Mensagens",              element: <Mensagens alunoId={id} /> },
-    { path: "/faq",                    element: <PerguntasFrequentes /> },
-    { path: "/Certificados",           element: <Certificados alunoId={id} /> },
-    { path: "/Ocorrencias",            element: <Ocorrencias alunoId={id} /> },
-    { path: "/calendarioacademico",    element: <Calendar /> },
-    { path: "/documentosinstitucionais", element: <InstitutionalDocuments /> },
-    { path: "/Perfil",                 element: <PerfilAluno alunoId={id} /> },
-    { path: "/repositorio",            element: <RepositorioInstitucional /> },
-    { path: "/Impressao",              element: <CreditoImpressao alunoId={id} /> },
-    { path: "/matrizcurricular",       element: <CurriculumMatrix userId={id} /> },
-    { path: "/professores",            element: <ListTeacher userId={id} /> },
-    { path: "/horario",                element: <HorarioAluno alunoId={id} /> },
-    { path: "/pagfacil",               element: <PagFacil alunoId={id} /> },
-    { path: "/financeiro",             element: <ExtratoFinanceiro alunoId={id} /> },
-    { path: "/AlterarSenha",           element: <AlterarSenha alunoId={id} /> },
+    { path: "/",                         element: <Home nome={usuario.nome} /> },
+    { path: "/Mensagens",                element: <Mensagens alunoId={id} /> },
+    { path: "/faq",                      element: <PerguntasFrequentes /> },
+    { path: "/Certificados",             element: <Certificados alunoId={id} /> },
+    { path: "/Ocorrencias",              element: <Ocorrencias alunoId={id} /> },
+    { path: "/calendarioacademico",      element: <Calendar /> },
+    { path: "/documentosinstitucionais", element: <InstitutionalDocuments usuario={usuario} /> },
+    { path: "/Perfil",                   element: <PerfilAluno alunoId={id} /> },
+    { path: "/repositorio",              element: <RepositorioInstitucional /> },
+    { path: "/Impressao",                element: <CreditoImpressao alunoId={id} /> },
+    { path: "/matrizcurricular",         element: <CurriculumMatrix userId={id} /> },
+    { path: "/professores",              element: <ListTeacher userId={id} /> },
+    { path: "/horario",                  element: <HorarioAluno alunoId={id} /> },
+    { path: "/pagfacil",                 element: <PagFacil alunoId={id} /> },
+    { path: "/financeiro",               element: <ExtratoFinanceiro alunoId={id} /> },
+    { path: "/AlterarSenha",             element: <AlterarSenha alunoId={id} /> },
     { path: "/AtividadesComplementares", element: <AtividadesComplementares alunoId={id} /> },
-    { path: "/Estagio",                element: <Estagio alunoId={id} /> },
-    { path: "/TCC",                    element: <TCC alunoId={id} /> },
-    { path: "/Requerimentos",          element: <Requerimentos alunoId={id} /> },
-    { path: "/Diploma",                element: <Diploma alunoId={id} /> },
-    { path: "/notas",                  element: <BoletimSemestre alunoId={id} semestre={1} /> },
+    { path: "/Estagio",                  element: <Estagio alunoId={id} /> },
+    { path: "/TCC",                      element: <TCC alunoId={id} /> },
+    { path: "/Requerimentos",            element: <Requerimentos alunoId={id} /> },
+    { path: "/Diploma",                  element: <Diploma alunoId={id} /> },
+    { path: "/notas",                    element: <BoletimSemestre alunoId={id} semestre={1} /> },
   ];
 
   return (
@@ -64,10 +64,6 @@ function AppRoutes({ usuario }) {
     </Routes>
   );
 }
-
-/* ============================= */
-/*      LAYOUT AUTENTICADO       */
-/* ============================= */
 
 function AuthLayout({ usuario, onSair }) {
   return (

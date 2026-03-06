@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const { conectar } = require("./config/database");
+const path = require("path");
 
 const professoresRoutes = require("./routes/professores");
 const alunosRoutes = require("./routes/alunos");
@@ -10,6 +11,7 @@ const cursosRoutes = require("./routes/cursos");
 const { seed } = require("./controllers/seedController");
 const { getMatriz, getFinanceiro, calcularBolsa } = require("./controllers/alunoController");
 const { getBoletim } = require("./controllers/matriculaController");
+const documentoRoutes = require("./routes/documentoInstitucionalRoutes");
 
 const app = express();
 
@@ -35,6 +37,8 @@ app.use("/alunos/:alunoId/certificados", require("./routes/certificadoRoutes"));
 app.use("/alunos/:alunoId/ocorrencias", require("./routes/ocorrenciaRoutes"));
 app.use("/alunos/:alunoId/mensagens", require("./routes/mensagemRoutes"));
 app.use("/repositorio", require("./routes/repositorioRoutes"));
+app.use("/documentos-institucionais", documentoRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 // 🔁 Rotas legadas (compatibilidade com frontend antigo)
