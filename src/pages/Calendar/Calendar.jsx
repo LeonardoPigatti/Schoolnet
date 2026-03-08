@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, } from "react";
 import "./Calendar.css";
 
 const API_URL = "http://localhost:5000";
@@ -44,8 +44,11 @@ function ModalSugestoes({ sugestoes, onAplicar, onFechar }) {
         </div>
         <div className="modal-acoes">
           <button className="btn-cancelar" onClick={onFechar}>Cancelar</button>
-          <button className="btn-salvar" onClick={() => onAplicar(sel.filter(s=>s.checked))}>
-            Aplicar Selecionados
+<button
+  style={{ backgroundColor: "black" }}
+  className="btn-salvar"
+  onClick={() => onAplicar(sel.filter(s => s.checked))}
+>            Aplicar Selecionados
           </button>
         </div>
       </div>

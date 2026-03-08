@@ -40,7 +40,7 @@
 
 .btn-sugestoes {
   background: var(--branco);
-  border: 1px solid var(--azul-header);
+  border: 1px solid black;
   color: black;
   border-radius: 6px; padding: 0.4rem 0.85rem;
   font-family: 'Lato', sans-serif; font-size: 0.82rem; font-weight: 700;
@@ -58,7 +58,7 @@
 
 .calendar-mensagem {
   text-align: center; font-size: 0.85rem;
-  color: var(--azul-header); font-weight: 700; margin: -8px 0 12px;
+  color: black; font-weight: 700; margin: -8px 0 12px;
 }
 
 /* ── Toolbar ── */
@@ -130,7 +130,7 @@
 .btn-atalho:hover    { background: #eef2f6; border-color: var(--azul-header); }
 .btn-atalho:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.btn-desfazer { color: var(--azul-header); font-weight: 700; }
+.btn-desfazer { color: black; font-weight: 700; }
 
 /* ── Copiar mês ── */
 .copiar-mes { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
