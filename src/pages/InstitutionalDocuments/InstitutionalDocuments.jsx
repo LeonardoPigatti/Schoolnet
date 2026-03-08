@@ -191,20 +191,23 @@ function ModalEditarDocumento({ professorId, doc, onSalvo, onFechar }) {
     setErro("");
 
     try {
-      const form = new FormData();
-      form.append("titulo", titulo);
-      form.append("categoria", categoria);
+      let body;
+      let headers = {};
 
       if (arquivo) {
+        const form = new FormData();
+        form.append("titulo", titulo);
+        form.append("categoria", categoria);
         form.append("arquivo", arquivo);
+        body = form;
+      } else {
+        body = JSON.stringify({ titulo, categoria });
+        headers["Content-Type"] = "application/json";
       }
 
       const res = await fetch(
         `${API_URL}/documentos-institucionais/${professorId}/${doc._id}`,
-        {
-          method: "PUT",
-          body: form,
-        }
+        { method: "PATCH", headers, body }
       );
 
       const dados = await res.json();
@@ -297,6 +300,8 @@ export default function InstitutionalDocuments({ usuario }) {
   const ehCoordenador = usuario?.tipoProfessor === "coordenador";
   const ehAluno = usuario?.perfil === "aluno";
 
+  const professorId = usuario?.id ?? usuario?._id;
+
   const cursoId = ehAluno
     ? usuario?.curso
     : ehCoordenador
@@ -328,7 +333,7 @@ export default function InstitutionalDocuments({ usuario }) {
 
     try {
       await fetch(
-        `${API_URL}/documentos-institucionais/${usuario.id}/${docParaDeletar}`,
+        `${API_URL}/documentos-institucionais/${professorId}/${docParaDeletar}`,
         { method: "DELETE" }
       );
 
@@ -432,7 +437,7 @@ export default function InstitutionalDocuments({ usuario }) {
 
       {modalAberto && (
         <ModalNovoDocumento
-          professorId={usuario.id}
+          professorId={professorId}
           onSalvo={buscarDocumentos}
           onFechar={() => setModalAberto(false)}
         />
@@ -440,7 +445,7 @@ export default function InstitutionalDocuments({ usuario }) {
 
       {docEditando && (
         <ModalEditarDocumento
-          professorId={usuario.id}
+          professorId={professorId}
           doc={docEditando}
           onSalvo={buscarDocumentos}
           onFechar={() => setDocEditando(null)}
@@ -458,5 +463,6 @@ export default function InstitutionalDocuments({ usuario }) {
 }
 
 // TODO colocar possibilidade de colocar arquivos zipados e reorganizar no banco
-// Cordernador pode editar arquivos enviados
-// baixar arquivos zipados
+// TODO Cordernador pode editar arquivos enviados e está bugado
+// TODO baixar arquivos zipados
+// TODO melhorar detalhes visuais

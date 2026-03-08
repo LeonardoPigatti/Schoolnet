@@ -103,30 +103,28 @@ const deletar = async (req, res) => {
 // ── EDITAR ───────────────────────────────────────────────────────────
 const editar = async (req, res) => {
   try {
-    const { titulo, categoria, cursos } = req.body;
+    const docAtual = await DocumentoInstitucional.findById(req.params.documentoId);
+    if (!docAtual) return res.status(404).json({ erro: "Documento não encontrado" });
 
-    const atualizacao = {
-      ...(titulo    && { titulo }),
-      ...(categoria && { categoria }),
-      ...(cursos !== undefined && { cursos: JSON.parse(cursos) }),
-    };
+    const titulo    = req.body.titulo    ?? docAtual.titulo;
+    const categoria = req.body.categoria ?? docAtual.categoria;
+    const cursos    = req.body.cursos != null
+      ? JSON.parse(req.body.cursos)
+      : docAtual.cursos;
+
+    const atualizacao = { titulo, categoria, cursos };
 
     if (req.file) {
-      const docAtual = await DocumentoInstitucional.findById(req.params.documentoId);
-      if (docAtual) {
-        const filePath = path.join(__dirname, "..", docAtual.url);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      }
+      const filePath = path.join(__dirname, "..", docAtual.url);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
       atualizacao.url = `/uploads/documentos/${req.file.filename}`;
     }
 
     const doc = await DocumentoInstitucional.findByIdAndUpdate(
       req.params.documentoId,
-      atualizacao,
+      { $set: atualizacao },
       { new: true }
     );
-
-    if (!doc) return res.status(404).json({ erro: "Documento não encontrado" });
 
     res.json({ mensagem: "Documento atualizado!", documento: doc });
   } catch (error) {
