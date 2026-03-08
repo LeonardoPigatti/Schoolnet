@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
 import useAuth from "./hooks/useAuth";
 import Home from "./pages/Home/Home";
+import Rematricula from "./pages/Rematricula/Rematricula";
 import Ofertas from "./pages/Ofertas/Ofertas";
 import Calendar from "./pages/Calendar/Calendar";
 import InstitutionalDocuments from "./pages/InstitutionalDocuments/InstitutionalDocuments";
@@ -41,6 +42,7 @@ function AppRoutes({ usuario }) {
     { path: "/calendarioacademico",      element: <Calendar usuario={usuario} /> },
     { path: "/documentosinstitucionais", element: <InstitutionalDocuments usuario={usuario} /> },
     { path: "/Perfil",                   element: <PerfilAluno alunoId={id} /> },
+    { path: "/rematricula",              element: <Rematricula usuario={usuario} /> },
     { path: "/repositorio",              element: <RepositorioInstitucional /> },
     { path: "/Impressao",                element: <CreditoImpressao alunoId={id} /> },
     { path: "/matrizcurricular",         element: <CurriculumMatrix usuario={usuario} /> },
