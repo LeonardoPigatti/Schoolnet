@@ -322,23 +322,21 @@ export default function Calendar({ usuario }) {
         <div className="toolbar">
 
           {/* Pincel */}
-          <div className="toolbar-grupo">
-            <span className="toolbar-label">Pincel</span>
-            <div className="pincel-opcoes">
-              {[null, "letivo", "nao_letivo", "feriado"].map(t => (
-                <button
-                  key={t ?? "ciclo"}
-                  className={`btn-pincel ${pincel===t ? "ativo":""} ${t ? `pincel-${t}`:""}`}
-                  onClick={() => setPincel(pincel===t ? null : t)}
-                  title={t ? `Pincel: ${t.replace("_"," ")}` : "Ciclo (clique alterna tipo)"}
-                >
-                  {t ? "" : "↻ Ciclo"}
-                </button>
-              ))}
-            </div>
-          </div>
+<div className="toolbar-grupo">
+  <span className="toolbar-label">Pincel</span>
+  <div className="pincel-opcoes">
+    {["letivo", "nao_letivo", "feriado"].map(t => (
+      <button
+        key={t}
+        className={`btn-pincel ${pincel===t ? "ativo":""} pincel-${t}`}
+        onClick={() => setPincel(pincel===t ? null : t)}
+        title={`Pincel: ${t.replace("_"," ")}`}
+      >
+      </button>
+    ))}
+  </div>
+</div>
 
-          <div className="toolbar-sep" />
 
           {/* Atalhos */}
           <div className="toolbar-grupo">
@@ -351,26 +349,24 @@ export default function Calendar({ usuario }) {
             </div>
           </div>
 
-          <div className="toolbar-sep" />
 
           {/* Copiar mês */}
-          <div className="toolbar-grupo">
-            <span className="toolbar-label">Copiar mês</span>
-            <CopiarMes meses={MESES} onCopiar={copiarMes} />
-          </div>
+       <div style={{ marginTop: "10px" }} className="toolbar-grupo">
+          <span className="toolbar-label">Copiar mês</span>
+          <CopiarMes meses={MESES} onCopiar={copiarMes} />
+       </div>
 
-          <div className="toolbar-sep" />
 
           {/* Desfazer */}
           <div className="toolbar-grupo">
-            <span className="toolbar-label">Desfazer</span>
             <button
+              style={{ position: "relative", top: 28 }}
               className="btn-atalho btn-desfazer"
               onClick={() => {
                 if (!historico.length) return;
-                setDiasMap(historico[historico.length-1]);
-                setHistorico(h => h.slice(0,-1));
-              }}
+                    setDiasMap(historico[historico.length - 1]);
+                    setHistorico(h => h.slice(0, -1));
+                            }}
               disabled={!historico.length}
             >
               ↩ Ctrl+Z ({historico.length})

@@ -14,9 +14,9 @@
 
 /* ── Container ── */
 .calendar-container {
-  max-width: 1100px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 40px 24px 60px;
+  padding: 20px 16px 36px;
   font-family: 'Lato', sans-serif;
   color: var(--texto);
   background: var(--branco);
@@ -29,37 +29,36 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   gap: 16px;
   flex-wrap: wrap;
 }
-.calendar-top h1 { font-size: 2rem; font-weight: 300; margin: 0 0 6px; }
-.calendar-hint   { font-size: 0.82rem; color: var(--muted); margin: 0; }
+.calendar-top h1 { font-size: 1.75rem; font-weight: 300; margin: 0 0 4px; right: 13px; position: relative; color: black; }
+.calendar-hint   { font-size: 0.82rem; color: var(--muted); margin: 0; left: 3px; position: relative; }
 
-.calendar-acoes { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
+.calendar-acoes { display: flex; gap: 10px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
 
 .btn-sugestoes {
   background: var(--branco);
   border: 1px solid var(--azul-header);
-  color: var(--azul-header);
-  border-radius: 6px; padding: 0.45rem 1rem;
-  font-family: 'Lato', sans-serif; font-size: 0.85rem; font-weight: 700;
+  color: black;
+  border-radius: 6px; padding: 0.4rem 0.85rem;
+  font-family: 'Lato', sans-serif; font-size: 0.82rem; font-weight: 700;
   cursor: pointer; transition: background 0.15s;
 }
 .btn-sugestoes:hover { background: #f0f4f7; }
 
 .btn-salvar-cal {
-  background: var(--azul-header); color: #fff; border: none;
-  border-radius: 6px; padding: 0.45rem 1.1rem;
-  font-family: 'Lato', sans-serif; font-size: 0.85rem; font-weight: 700;
-  cursor: pointer; transition: background 0.2s;
+  background: black; color: #fff; border: none;
+  border-radius: 6px; padding: 0.4rem 0.95rem;
+  font-family: 'Lato', sans-serif; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer;
 }
-.btn-salvar-cal:hover    { background: #3a4e61; }
 .btn-salvar-cal:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .calendar-mensagem {
-  text-align: center; font-size: 0.88rem;
-  color: var(--azul-header); font-weight: 700; margin: -8px 0 16px;
+  text-align: center; font-size: 0.85rem;
+  color: var(--azul-header); font-weight: 700; margin: -8px 0 12px;
 }
 
 /* ── Toolbar ── */
@@ -71,26 +70,28 @@
   background: #f8f9fb;
   border: 1px solid var(--cinza-borda);
   border-radius: 8px;
-  padding: 14px 16px;
-  margin-bottom: 28px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 .toolbar-grupo {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 0 16px 0 0;
+  gap: 6px;
+  padding: 0 14px 0 0;
+  min-width: 0;
 }
 
 .toolbar-sep {
   width: 1px;
   background: var(--cinza-borda);
-  margin: 0 16px 0 0;
+  margin: 0 14px 0 0;
   align-self: stretch;
 }
 
 .toolbar-label {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -98,13 +99,13 @@
 }
 
 /* ── Pincel ── */
-.pincel-opcoes { display: flex; gap: 6px; align-items: center; }
+.pincel-opcoes { display: flex; gap: 5px; align-items: center; }
 
 .btn-pincel {
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   border: 2px solid #ccc; border-radius: 5px;
   cursor: pointer; transition: transform 0.1s, border-color 0.15s;
-  font-size: 0.78rem; font-family: 'Lato', sans-serif;
+  font-size: 0.75rem; font-family: 'Lato', sans-serif;
   display: flex; align-items: center; justify-content: center;
 }
 .btn-pincel:hover          { transform: scale(1.12); }
@@ -112,18 +113,17 @@
 .btn-pincel.pincel-letivo     { background: var(--letivo); }
 .btn-pincel.pincel-nao_letivo { background: var(--nao-letivo); }
 .btn-pincel.pincel-feriado    { background: var(--feriado); }
-/* ciclo */
 .btn-pincel:not(.pincel-letivo):not(.pincel-nao_letivo):not(.pincel-feriado) {
-  background: #fff; width: auto; padding: 0 8px; font-size: 0.78rem; color: var(--texto);
+  background: #fff; width: auto; padding: 0 7px; font-size: 0.75rem; color: var(--texto);
 }
 
 /* ── Atalhos ── */
-.atalhos-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.atalhos-grid { display: flex; flex-wrap: wrap; gap: 5px; }
 
 .btn-atalho {
   background: #fff; border: 1px solid var(--cinza-borda);
-  border-radius: 5px; padding: 0.3rem 0.7rem;
-  font-family: 'Lato', sans-serif; font-size: 0.8rem; color: var(--texto);
+  border-radius: 5px; padding: 0.25rem 0.6rem;
+  font-family: 'Lato', sans-serif; font-size: 0.76rem; color: var(--texto);
   cursor: pointer; transition: background 0.15s, border-color 0.15s;
   white-space: nowrap;
 }
@@ -133,19 +133,19 @@
 .btn-desfazer { color: var(--azul-header); font-weight: 700; }
 
 /* ── Copiar mês ── */
-.copiar-mes { display: flex; gap: 6px; align-items: center; }
+.copiar-mes { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
 .sel-mes {
   border: 1px solid var(--cinza-borda); border-radius: 5px;
-  padding: 0.28rem 0.5rem; font-family: 'Lato', sans-serif;
-  font-size: 0.8rem; color: var(--texto); background: #fff; cursor: pointer;
+  padding: 0.22rem 0.4rem; font-family: 'Lato', sans-serif;
+  font-size: 0.76rem; color: var(--texto); background: #fff; cursor: pointer;
 }
 .copiar-arrow { color: var(--muted); font-size: 0.9rem; }
 
 /* ── Grid de meses ── */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
 .calendar-card {
@@ -157,28 +157,30 @@
 
 .calendar-header {
   background: black; color: white;
-  text-align: center; padding: 10px 14px;
-  font-weight: 700; font-size: 0.88rem; letter-spacing: 1px;
+  text-align: center; padding: 8px 10px;
+  font-weight: 700; font-size: 0.82rem; letter-spacing: 1px;
 }
 
 .week-days {
   display: grid; grid-template-columns: repeat(7, 1fr);
-  text-align: center; padding: 10px 10px 4px;
-  font-size: 0.78rem; font-weight: 700;
+  text-align: center; padding: 4px 4px 2px;
+  font-size: 0.65rem; font-weight: 700;
   border-bottom: 1px solid black;
 }
 
 .days-grid {
   display: grid; grid-template-columns: repeat(7, 1fr);
-  gap: 4px; padding: 10px;
+  gap: 2px;
+  padding: 4px;
 }
 
 .day {
-  height: 34px;
+  width: 100%;
+  height: 28px;
   display: flex; align-items: center; justify-content: center;
   background: var(--nao-letivo);
   border: 1px solid black;
-  font-size: 0.82rem; color: var(--texto);
+  font-size: 0.7rem; color: var(--texto);
   box-sizing: border-box; transition: background 0.1s;
 }
 .day.empty      { background: transparent; border: none; }
@@ -192,17 +194,17 @@
 
 /* ── Legenda com contadores ── */
 .legend {
-  margin-top: 40px;
-  display: flex; align-items: center; gap: 20px;
-  padding: 16px 0; border-top: 1px solid black;
+  margin-top: 28px;
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 0; border-top: 1px solid black;
   flex-wrap: wrap;
 }
-.legend h3 { font-size: 0.88rem; font-weight: 700; margin: 0; white-space: nowrap; }
+.legend h3 { font-size: 0.85rem; font-weight: 700; margin: 0; white-space: nowrap; }
 
 .legend-item {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 0.85rem; color: black;
-  padding: 4px 8px; border-radius: 5px;
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.82rem; color: black;
+  padding: 4px 7px; border-radius: 5px;
   transition: background 0.15s;
 }
 .legend-clicavel { cursor: pointer; }
@@ -210,7 +212,7 @@
 .legend-ativo { background: #e6eef4; outline: 2px solid var(--azul-header); }
 
 .legend-box {
-  width: 16px; height: 16px;
+  width: 14px; height: 14px;
   border: 1px solid black; flex-shrink: 0;
 }
 .legend-box.nao-letivo { background: var(--nao-letivo); }
@@ -218,10 +220,10 @@
 .legend-box.feriado    { background: var(--feriado); }
 
 .legend-count {
-  font-size: 0.75rem; font-weight: 700;
+  font-size: 0.72rem; font-weight: 700;
   color: var(--azul-header);
   background: #eef2f6;
-  border-radius: 10px; padding: 1px 7px;
+  border-radius: 10px; padding: 1px 6px;
   margin-left: 2px;
 }
 
@@ -233,52 +235,59 @@
   z-index: 1000;
 }
 .modal-box {
-  background: #fff; border-radius: 10px; padding: 2rem;
+  background: #fff; border-radius: 10px; padding: 1.75rem;
   width: 100%; max-width: 480px;
   box-shadow: 0 16px 48px rgba(0,0,0,0.12);
   font-family: 'Lato', sans-serif;
   max-height: 80vh; display: flex; flex-direction: column;
 }
-.modal-box-sm { max-width: 380px; }
-.modal-titulo { font-size: 1.1rem; font-weight: 700; color: var(--texto); margin: 0 0 6px; }
-.modal-desc   { font-size: 0.85rem; color: var(--muted); margin: 0 0 1rem; }
+.modal-box-sm { max-width: 360px; }
+.modal-titulo { font-size: 1.05rem; font-weight: 700; color: var(--texto); margin: 0 0 5px; }
+.modal-desc   { font-size: 0.82rem; color: var(--muted); margin: 0 0 1rem; }
 .modal-label  {
-  display: block; font-size: 0.72rem; font-weight: 700;
+  display: block; font-size: 0.7rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--muted); margin-bottom: 4px;
+  color: var(--muted); margin-bottom: 3px;
 }
 .modal-input {
   width: 100%; border: 1px solid var(--cinza-borda); border-radius: 6px;
-  padding: 0.5rem 0.8rem; font-size: 0.9rem;
+  padding: 0.45rem 0.75rem; font-size: 0.87rem;
   font-family: 'Lato', sans-serif; color: var(--texto);
-  margin-bottom: 1rem; box-sizing: border-box;
+  margin-bottom: 0.9rem; box-sizing: border-box;
   transition: border-color 0.2s; background: #fff;
 }
 .modal-input:focus { outline: none; border-color: var(--azul-header); }
-.modal-erro   { color: #c0392b; font-size: 0.85rem; margin: -0.5rem 0 0.75rem; }
+.modal-erro   { color: #c0392b; font-size: 0.82rem; margin: -0.4rem 0 0.7rem; }
 
 .sugestoes-lista {
   overflow-y: auto; flex: 1;
-  display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem;
+  display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.1rem;
 }
-.sugestao-item { display: flex; align-items: center; gap: 10px; font-size: 0.87rem; cursor: pointer; }
+.sugestao-item { display: flex; align-items: center; gap: 9px; font-size: 0.84rem; cursor: pointer; }
 .sugestao-data { color: var(--azul-header); font-weight: 700; white-space: nowrap; }
 .sugestao-desc { color: var(--texto); }
 
-.modal-acoes { display: flex; gap: 0.75rem; justify-content: flex-end; }
+.modal-acoes { display: flex; gap: 0.6rem; justify-content: flex-end; }
 
 .btn-cancelar {
   background: var(--cinza-linha); border: 1px solid var(--cinza-borda);
-  border-radius: 6px; padding: 0.5rem 1rem;
-  font-family: 'Lato', sans-serif; font-size: 0.88rem;
+  border-radius: 6px; padding: 0.45rem 0.9rem;
+  font-family: 'Lato', sans-serif; font-size: 0.85rem;
   cursor: pointer; color: var(--muted); transition: background 0.15s;
 }
 .btn-cancelar:hover { background: #e4e4e4; }
 
 .btn-salvar {
-  background: var(--azul-header); color: #fff; border: none;
-  border-radius: 6px; padding: 0.5rem 1.25rem;
-  font-family: 'Lato', sans-serif; font-size: 0.88rem; font-weight: 700;
-  cursor: pointer; transition: background 0.2s;
+  background: black; color: #fff; border: none;
+  border-radius: 6px; padding: 0.45rem 1.1rem;
+  font-family: 'Lato', sans-serif; font-size: 0.85rem; font-weight: 700;
+  cursor: pointer;
 }
-.btn-salvar:hover { background: #3a4e61; }
+
+/* ── Responsivo ── */
+@media (max-width: 700px) {
+  .calendar-container { padding: 16px 10px 32px; }
+  .calendar-top h1 { font-size: 1.4rem; }
+  .calendar-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .toolbar { padding: 8px 10px; }
+}
