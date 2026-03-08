@@ -36,38 +36,54 @@ export default function Login({ onLogin }) {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-async function handleLogin(e) {
-  e.preventDefault();
-  setErro("");
-  try {
-    const rota = perfil === "aluno" ? "alunos" : "professores";
-    const resposta = await fetch(`${API_URL}/${rota}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha }),
-    });
-    const dados = await resposta.json();
-    if (dados.sucesso) {
-      onLogin({
-        nome: dados.nome,
-        id: dados.alunoId ?? dados.professorId,
-        perfil,
-        tipoProfessor: dados.tipoProfessor ?? null,
-        cursoCoordenado: dados.cursoCoordenado ?? null,  // ← adiciona essa linha
+  async function handleLogin(e) {
+    e.preventDefault();
+    setErro("");
 
+    try {
+      const rota = perfil === "aluno" ? "alunos" : "professores";
+
+      const resposta = await fetch(`${API_URL}/${rota}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          senha
+        })
       });
-    } else {
-      setErro(dados.erro ?? "Usuário ou senha incorretos.");
+
+      const dados = await resposta.json();
+
+      if (dados.sucesso) {
+        onLogin({
+          nome: dados.nome,
+          id: dados.alunoId ?? dados.professorId,
+          perfil: perfil,
+
+          // dados extras
+          curso: dados.curso ?? null,
+          bolsa: dados.bolsa ?? null,
+          matrizCurricular: dados.matrizCurricular ?? null,
+
+          tipoProfessor: dados.tipoProfessor ?? null,
+          cursoCoordenado: dados.cursoCoordenado ?? null
+        });
+
+      } else {
+        setErro(dados.erro ?? "Usuário ou senha incorretos.");
+      }
+
+    } catch (erro) {
+      setErro("Erro ao conectar com o servidor.");
     }
-  // eslint-disable-next-line no-unused-vars
-  } catch (_) {
-    setErro("Erro ao conectar com o servidor.");
   }
-}
 
   return (
     <div className="login-wrapper">
-      {/* Painel esquerdo — imagem */}
+
+      {/* Painel esquerdo */}
       <div className="login-image-panel">
         <video
           src={videoInst}
@@ -79,19 +95,28 @@ async function handleLogin(e) {
         />
       </div>
 
-      {/* Painel direito — formulário */}
+      {/* Painel direito */}
       <div className="login-form-panel">
+
         <Relogio />
-        
 
         <div className="login-form-content">
 
-            <img 
-    src="src\assets\brasao\brasao_hill.png" 
-    style={{ width: "250px", height: "auto", display: "block", margin: "0 auto 24px" }} 
-  />
-          {/* Seletor de perfil */}
-          <p className="login-section-label">Por favor, selecione seu perfil de acesso</p>
+          <img
+            src="/src/assets/brasao/brasao_hill.png"
+            style={{
+              width: "250px",
+              height: "auto",
+              display: "block",
+              margin: "0 auto 24px"
+            }}
+          />
+
+          {/* Perfil */}
+          <p className="login-section-label">
+            Por favor, selecione seu perfil de acesso
+          </p>
+
           <div className="perfil-select-wrapper">
             <select
               className="perfil-select"
@@ -102,6 +127,7 @@ async function handleLogin(e) {
               <option value="professor">Professor</option>
               <option value="coordenador">Coordenador</option>
             </select>
+
             <span className="perfil-arrow">
               <svg viewBox="0 0 24 24">
                 <polyline points="6 9 12 15 18 9" />
@@ -110,8 +136,12 @@ async function handleLogin(e) {
           </div>
 
           {/* Inputs */}
-          <p className="login-section-label">Informe seu e-mail e senha</p>
+          <p className="login-section-label">
+            Informe seu e-mail e senha
+          </p>
+
           <form onSubmit={handleLogin}>
+
             <input
               className="input-field"
               type="email"
@@ -120,6 +150,7 @@ async function handleLogin(e) {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
             <input
               className="input-field"
               type="password"
@@ -137,15 +168,22 @@ async function handleLogin(e) {
               Esqueceu sua senha?
             </button>
 
-            {erro && <p className="login-erro">{erro}</p>}
+            {erro && (
+              <p className="login-erro">{erro}</p>
+            )}
 
-            <button className="botao-login" type="submit">
+            <button
+              className="botao-login"
+              type="submit"
+            >
               Entrar
             </button>
+
           </form>
 
           <div className="divisor">ou</div>
 
+          {/* Google */}
           <button
             type="button"
             className="botao-google"
@@ -157,16 +195,16 @@ async function handleLogin(e) {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
             </svg>
+
             Continuar com Google
           </button>
 
           <p className="login-footer">
             Sistema desenvolvido por Leonardo Pigatti.
           </p>
+
         </div>
       </div>
     </div>
   );
 }
-
-// TODO só falta colcoar o nome da faculdade e o fazer o logar com google e esqueci a senha funcionar

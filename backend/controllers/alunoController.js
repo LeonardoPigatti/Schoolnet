@@ -45,7 +45,9 @@ const login = async (req, res) => {
   try {
     const { email, senha } = req.body;
 
-    const aluno = await Aluno.findOne({ email }).populate("curso");
+    const aluno = await Aluno.findOne({ email })
+  .populate("curso")
+  .populate("matrizCurricular");
     if (!aluno) return res.json({ sucesso: false });
 
     const senhaCorreta = await bcrypt.compare(senha, aluno.senha);
@@ -55,8 +57,9 @@ const login = async (req, res) => {
       sucesso: true,
       nome: aluno.nome,
       alunoId: aluno._id,
-      curso: aluno.curso.nome,
-    });
+      curso: aluno.curso._id, 
+matrizCurricular: aluno.matrizCurricular?._id    });
+
   } catch (error) {
     res.status(500).json(error);
   }

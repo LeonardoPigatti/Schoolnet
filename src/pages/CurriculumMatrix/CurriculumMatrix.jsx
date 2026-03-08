@@ -7,6 +7,8 @@ export default function MatrizCurricular() {
   const [erro, setErro] = useState(null);
   const [busca, setBusca] = useState("");
 
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
   useEffect(() => {
     fetch("http://localhost:5000/matrizes-curriculares")
       .then((res) => {
@@ -23,9 +25,11 @@ export default function MatrizCurricular() {
       });
   }, []);
 
-  const matricesFiltradas = matrizes.filter((m) =>
-    m.nome.toLowerCase().includes(busca.toLowerCase())
-  );
+  const matricesFiltradas = matrizes.filter((m) => {
+    const pertenceAoUsuario = m._id === usuario?.matrizCurricular;
+    const bateBusca = m.nome.toLowerCase().includes(busca.toLowerCase());
+    return pertenceAoUsuario && bateBusca;
+  });
 
   return (
     <div className="mc-page">
@@ -99,7 +103,18 @@ export default function MatrizCurricular() {
           </div>
         )}
 
-        {!loading && !erro && matricesFiltradas.length === 0 && (
+        {!loading && !erro && !usuario?.matrizCurricular && (
+          <div className="mc-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <p>Nenhuma matriz curricular atribuída ao seu perfil.</p>
+          </div>
+        )}
+
+        {!loading && !erro && usuario?.matrizCurricular && matricesFiltradas.length === 0 && (
           <div className="mc-empty">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
