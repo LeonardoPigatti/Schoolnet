@@ -162,7 +162,7 @@ export default function InstitutionalDocuments({ usuario }) {
       <div className="documents-header-row">
         <div>
           <h1 className="documents-title">Documentos Institucionais</h1>
-          <p className="documents-subtitle">Documentação Disponível</p>
+          <p className="documents-subtitle">Acervo disponibilizados para referência oficial</p>
         </div>
         {ehCoordenador && (
           <button className="btn-novo-doc" onClick={() => setModalAberto(true)}>
@@ -234,3 +234,7 @@ export default function InstitutionalDocuments({ usuario }) {
     </div>
   );
 }
+
+// TODO colocar possibilidade de colocar arquivos zipados e reorganizar no banco
+// Cordernador pode editar arquivos enviados
+// baixar arquivos zipados

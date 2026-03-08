@@ -111,14 +111,14 @@ export default function Calendar({ usuario }) {
   const arrastarRef = useRef(false);
 
   const ehCoordenador = usuario?.tipoProfessor === "coordenador";
-  const cursoId       = usuario?.perfil === "aluno"
-    ? usuario?.cursoId
+  const curso       = usuario?.perfil === "aluno"
+    ? usuario?.curso
     : usuario?.cursoCoordenado;
 
   // ── Carregar ──────────────────────────────────────────────────────
   useEffect(() => {
-    if (!cursoId) { setCarregando(false); return; }
-    fetch(`${API_URL}/calendario/${cursoId}`)
+    if (!curso) { setCarregando(false); return; }
+    fetch(`${API_URL}/calendario/${curso}`)
       .then(r => r.json())
       .then(dados => {
         const map = {};
@@ -128,7 +128,7 @@ export default function Calendar({ usuario }) {
       })
       .catch(()=>{})
       .finally(()=>setCarregando(false));
-  }, [cursoId]);
+  }, [curso]);
 
   // ── Ctrl+Z ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -286,7 +286,7 @@ export default function Calendar({ usuario }) {
       const dias = Object.entries(diasMap).map(([data, val]) => ({
         data, tipo: val.tipo, descricao: val.descricao,
       }));
-      const res   = await fetch(`${API_URL}/calendario/${cursoId}`, {
+      const res   = await fetch(`${API_URL}/calendario/${curso}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dias, ano: YEAR }),
       });
@@ -458,6 +458,5 @@ function CopiarMes({ meses, onCopiar }) {
   );
 }
 
-// TODO CORRIGIR EFICACIA DOS BOTOES 
-// TODO CORRIGIR DIMENSIONAMENTO DA TELA 
-// TODO CORRIGIR UM POUCO O VISUAL 
+// TODO Corrigir mini detalhes do visual como tamanho do calendario para o aluno ser igual ao professor
+// TODO Colocar datas via upload de excel ou pdf

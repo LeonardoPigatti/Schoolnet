@@ -33,7 +33,7 @@
   text-align: left;
   font-size: 2rem;
   font-weight: 300;
-  color: var(--texto);
+  color: black;
   letter-spacing: 0.01em;
   margin: 0 0 6px;
 }
@@ -48,7 +48,7 @@
 
 /* ── Botão novo documento ── */
 .btn-novo-doc {
-  background: var(--azul-header);
+  background: black;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -60,8 +60,11 @@
   white-space: nowrap;
   transition: background 0.2s;
   margin-top: 6px;
+  margin-left:430px;
+  right: 45px;
+  position: relative;
+  bottom: 5px;
 }
-.btn-novo-doc:hover { background: #3a4e61; }
 
 /* ── Collapse principal ── */
 .collapse {
@@ -81,8 +84,11 @@
   gap: 8px;
   transition: color 0.15s;
   user-select: none;
+  right: 30px;
+  position: relative;
+  
 }
-.collapse-header:hover { color: var(--azul-header); }
+.collapse-header:hover { color: black; }
 
 .collapse-arrow {
   font-style: normal;
@@ -91,7 +97,8 @@
 }
 
 .collapse-content {
-  padding-left: 16px;
+      right: 20px;
+    position: relative;
   padding-top: 8px;
 }
 
@@ -112,7 +119,7 @@
   gap: 6px;
   transition: color 0.15s;
 }
-.sub-header:hover { color: var(--azul-header); }
+.sub-header:hover { color: black; }
 
 /* ── Arquivos ── */
 .file-item {
@@ -130,7 +137,7 @@
 
 .file-link {
   text-decoration: none;
-  color: var(--azul-header);
+  color: black;
   font-size: 0.88rem;
   font-family: 'Lato', sans-serif;
   transition: opacity 0.15s;
@@ -190,7 +197,7 @@
 .modal-titulo {
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--texto);
+  color: black;
   margin: 0 0 1.25rem;
 }
 
@@ -219,7 +226,7 @@
 }
 .modal-input:focus {
   outline: none;
-  border-color: var(--azul-header);
+  border-color: black;
 }
 
 /* ── Área de upload ── */
@@ -233,7 +240,7 @@
   transition: border-color 0.2s, background 0.2s;
 }
 .upload-area:hover {
-  border-color: var(--azul-header);
+  border-color: black;
   background: #f8fafc;
 }
 
@@ -276,7 +283,7 @@
 .btn-cancelar:hover { background: #ebebeb; }
 
 .btn-salvar {
-  background: var(--azul-header);
+  background: black;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -287,5 +294,4 @@
   cursor: pointer;
   transition: background 0.2s;
 }
-.btn-salvar:hover    { background: #3a4e61; }
 .btn-salvar:disabled { opacity: 0.6; cursor: not-allowed; }
