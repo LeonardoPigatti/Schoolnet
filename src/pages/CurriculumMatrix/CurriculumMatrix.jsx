@@ -6,6 +6,8 @@ export default function MatrizCurricular() {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
   const [busca, setBusca] = useState("");
+  const [matrizSelecionada, setMatrizSelecionada] = useState(null);
+  const [buscaDisciplina, setBuscaDisciplina] = useState("");
 
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
@@ -31,12 +33,106 @@ export default function MatrizCurricular() {
     return pertenceAoUsuario && bateBusca;
   });
 
+  const disciplinasFiltradas = matrizSelecionada?.disciplinas.filter((d) =>
+    d.disciplina.nome.toLowerCase().includes(buscaDisciplina.toLowerCase())
+  ) || [];
+
+  // ── Tela 2: disciplinas da matriz selecionada ──
+  if (matrizSelecionada) {
+    return (
+      <div className="mc-page">
+        <div className="mc-bg-decoration" aria-hidden="true">
+          <span /><span /><span />
+        </div>
+
+        <header className="mc-header">
+          <div className="mc-header-inner">
+            <button className="mc-back" onClick={() => { setMatrizSelecionada(null); setBuscaDisciplina(""); }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 5l-7 7 7 7" />
+              </svg>
+              Voltar
+            </button>
+            <div className="mc-badge">Disciplinas</div>
+            <h1 className="mc-title">
+              {matrizSelecionada.nome}
+              <br />
+              <em>{matrizSelecionada.ano}</em>
+            </h1>
+            <p className="mc-subtitle">Disciplinas da sua matriz curricular</p>
+          </div>
+        </header>
+
+        <main className="mc-main">
+          <div className="mc-toolbar">
+            <div className="mc-search-wrapper">
+              <svg className="mc-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                className="mc-search"
+                type="text"
+                placeholder="Buscar disciplina..."
+                value={buscaDisciplina}
+                onChange={(e) => setBuscaDisciplina(e.target.value)}
+              />
+              {buscaDisciplina && (
+                <button className="mc-search-clear" onClick={() => setBuscaDisciplina("")}>×</button>
+              )}
+            </div>
+            <div className="mc-count">
+              <span>
+                {disciplinasFiltradas.length}{" "}
+                {disciplinasFiltradas.length === 1 ? "disciplina" : "disciplinas"}
+              </span>
+            </div>
+          </div>
+
+          {disciplinasFiltradas.length === 0 && (
+            <div className="mc-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                <rect x="9" y="3" width="6" height="4" rx="1" />
+              </svg>
+              <p>Nenhuma disciplina encontrada.</p>
+            </div>
+          )}
+
+          {disciplinasFiltradas.length > 0 && (
+            <ul className="mc-list">
+              {disciplinasFiltradas.map((item, index) => {
+                const d = item.disciplina;
+                return (
+                  <li
+                    className="mc-item"
+                    key={d._id}
+                    style={{ animationDelay: `${index * 60}ms` }}
+                  >
+                    <div className="mc-item-index">{String(index + 1).padStart(2, "0")}</div>
+                    <div className="mc-item-content">
+                      <span className="mc-item-name">{d.nome}</span>
+                      <div className="mc-item-meta">
+                        <span>⏱ {d.cargaHoraria}h</span>
+                        <span>📘 {d.tipo}</span>
+                        <span>💰 R$ {d.valor}</span>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </main>
+      </div>
+    );
+  }
+
+  // ── Tela 1: lista de matrizes ──
   return (
     <div className="mc-page">
       <div className="mc-bg-decoration" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+        <span /><span /><span />
       </div>
 
       <header className="mc-header">
@@ -68,9 +164,7 @@ export default function MatrizCurricular() {
               onChange={(e) => setBusca(e.target.value)}
             />
             {busca && (
-              <button className="mc-search-clear" onClick={() => setBusca("")}>
-                ×
-              </button>
+              <button className="mc-search-clear" onClick={() => setBusca("")}>×</button>
             )}
           </div>
           <div className="mc-count">
@@ -114,7 +208,7 @@ export default function MatrizCurricular() {
           </div>
         )}
 
-        {!loading && !erro && usuario?.matrizCurricular && matricesFiltradas.length === 0 && (
+        {!loading && !erro && matricesFiltradas.length === 0 && usuario?.matrizCurricular && (
           <div className="mc-empty">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
@@ -130,7 +224,8 @@ export default function MatrizCurricular() {
               <li
                 className="mc-item"
                 key={matriz._id}
-                style={{ animationDelay: `${index * 60}ms` }}
+                style={{ animationDelay: `${index * 60}ms`, cursor: "pointer" }}
+                onClick={() => setMatrizSelecionada(matriz)}
               >
                 <div className="mc-item-index">{String(index + 1).padStart(2, "0")}</div>
                 <div className="mc-item-content">

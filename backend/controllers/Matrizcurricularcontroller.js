@@ -3,17 +3,18 @@ const MatrizCurricular = require("../models/Matrizcurricularmodel");
 // Listar todas as matrizes
 const listar = async (req, res) => {
   try {
-    const matrizes = await MatrizCurricular.find();
+    const matrizes = await MatrizCurricular.find()
+      .populate("disciplinas.disciplina");
     res.json(matrizes);
   } catch (err) {
     res.status(500).json({ erro: "Erro ao listar matrizes curriculares." });
   }
 };
 
-// Buscar por ID
 const buscarPorId = async (req, res) => {
   try {
-    const matriz = await MatrizCurricular.findById(req.params.id);
+    const matriz = await MatrizCurricular.findById(req.params.id)
+      .populate("disciplinas.disciplina");
     if (!matriz) return res.status(404).json({ erro: "Matriz curricular não encontrada." });
     res.json(matriz);
   } catch (err) {

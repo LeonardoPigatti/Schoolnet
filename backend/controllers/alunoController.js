@@ -58,7 +58,7 @@ const login = async (req, res) => {
       nome: aluno.nome,
       alunoId: aluno._id,
       curso: aluno.curso._id, 
-matrizCurricular: aluno.matrizCurricular?._id    });
+      matrizCurricular: aluno.matrizCurricular?._id    });
 
   } catch (error) {
     res.status(500).json(error);
