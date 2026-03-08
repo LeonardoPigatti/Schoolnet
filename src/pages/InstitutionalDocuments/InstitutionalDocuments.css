@@ -295,3 +295,26 @@
   transition: background 0.2s;
 }
 .btn-salvar:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.file-acoes {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.btn-editar {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.btn-editar:hover { color: #2980b9; background: #eaf4fb; }
+
+.btn-deletar-confirmar {
+  background-color: black;
+  color: #fff;
+}
