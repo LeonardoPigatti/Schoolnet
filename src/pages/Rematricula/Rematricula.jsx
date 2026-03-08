@@ -3,12 +3,15 @@ import "./Rematricula.css";
 
 export default function Rematricula() {
   const [ofertas, setOfertas] = useState([]);
+  const [matriculas, setMatriculas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
   const [busca, setBusca] = useState("");
+  const [loadingMatricula, setLoadingMatricula] = useState(null); // id da oferta em processo
 
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const cursoId = usuario?.curso;
+  const alunoId = usuario?.id;
 
   useEffect(() => {
     if (!cursoId) {
@@ -16,21 +19,53 @@ export default function Rematricula() {
       return;
     }
 
-    fetch(`http://localhost:5000/ofertas/curso/${cursoId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Erro ao buscar ofertas.");
-        return res.json();
-      })
-      .then((data) => {
-        const ativas = data.filter((o) => o.ativa);
-        setOfertas(ativas);
+    Promise.all([
+      fetch(`http://localhost:5000/ofertas/curso/${cursoId}`).then((r) => r.json()),
+      fetch(`http://localhost:5000/matriculas/aluno/${alunoId}`).then((r) => r.json()),
+    ])
+      .then(([ofertasData, matriculasData]) => {
+        setOfertas(ofertasData.filter((o) => o.ativa));
+        setMatriculas(matriculasData);
         setLoading(false);
       })
-      .catch((err) => {
-        setErro(err.message);
+      .catch(() => {
+        setErro("Erro ao carregar dados.");
         setLoading(false);
       });
   }, []);
+
+  const jaMatriculado = (disciplinaId) =>
+    matriculas.some((m) => m.disciplina._id === disciplinaId || m.disciplina === disciplinaId);
+
+  const handleMatricular = async (oferta) => {
+    const disciplinaId = oferta.disciplina._id;
+
+    if (jaMatriculado(disciplinaId)) return;
+
+    setLoadingMatricula(oferta._id);
+
+    try {
+      const res = await fetch("http://localhost:5000/matriculas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ alunoId, disciplinaId }),
+      });
+
+      const data = await res.json();
+
+      if (data.erro) {
+        alert(data.erro);
+        return;
+      }
+
+      // Atualiza localmente para refletir a matrícula sem recarregar
+      setMatriculas((prev) => [...prev, { disciplina: { _id: disciplinaId } }]);
+    } catch {
+      alert("Erro ao realizar matrícula.");
+    } finally {
+      setLoadingMatricula(null);
+    }
+  };
 
   const ofertasFiltradas = ofertas.filter((o) =>
     o.disciplina.nome.toLowerCase().includes(busca.toLowerCase())
@@ -130,9 +165,12 @@ export default function Rematricula() {
               <ul className="re-list">
                 {ofertasFiltradas.map((oferta, index) => {
                   const d = oferta.disciplina;
+                  const matriculado = jaMatriculado(d._id);
+                  const processando = loadingMatricula === oferta._id;
+
                   return (
                     <li
-                      className="re-item"
+                      className={`re-item ${matriculado ? "re-item--matriculado" : ""}`}
                       key={oferta._id}
                       style={{ animationDelay: `${index * 60}ms` }}
                     >
@@ -145,9 +183,13 @@ export default function Rematricula() {
                           <span>💰 R$ {d.valor}</span>
                         </div>
                       </div>
-                      <div className="re-item-status">
-                        <span className="re-item-disponivel">Disponível</span>
-                      </div>
+                      <button
+                        className={`re-btn ${matriculado ? "re-btn--matriculado" : ""}`}
+                        onClick={() => handleMatricular(oferta)}
+                        disabled={matriculado || processando}
+                      >
+                        {processando ? "..." : matriculado ? "Matriculado" : "Matricular"}
+                      </button>
                     </li>
                   );
                 })}

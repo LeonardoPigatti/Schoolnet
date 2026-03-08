@@ -246,15 +246,44 @@
   flex-shrink: 0;
 }
 
-.re-item-disponivel {
-  display: inline-block;
-  padding: 5px 14px;
+.re-item--matriculado {
+  border-color: #a5d6a7;
+  background: #f6fff6;
+}
+
+.re-btn {
+  flex-shrink: 0;
+  padding: 8px 20px;
   border-radius: 100px;
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 500;
-  background: #e8f5e9;
-  color: #2e7d32;
-  border: 1.5px solid #a5d6a7;
+  cursor: pointer;
+  border: 1.5px solid var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+  transition: all 0.2s;
+}
+
+.re-btn:hover:not(:disabled) {
+  background: #a8401a;
+  border-color: #a8401a;
+}
+
+.re-btn--matriculado {
+  background: #2e7d32;
+  border-color: #2e7d32;
+  cursor: default;
+}
+
+.re-btn--matriculado:hover {
+  background: #2e7d32;
+  border-color: #2e7d32;
+}
+
+.re-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .re-loading {

@@ -51,4 +51,13 @@ const getBoletim = async (req, res) => {
   }
 };
 
-module.exports = { matricular, lancarNotas, lancarFaltas, getBoletim };
+const getMatriculasPorAluno = async (req, res) => {
+  try {
+    const matriculas = await Matricula.find({ aluno: req.params.alunoId }).populate("disciplina");
+    res.json(matriculas);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+module.exports = { matricular, lancarNotas, lancarFaltas, getBoletim, getMatriculasPorAluno };
