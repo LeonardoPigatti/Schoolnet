@@ -1,35 +1,33 @@
 import React, { useEffect, useState } from "react";
 import "./BoletimSemestre.css";
 
-function BoletimSemestre({ alunoId, semestre }) {
+function BoletimSemestre({ usuario }) {
   const [disciplinas, setDisciplinas] = useState([]);
+  const alunoId = usuario?.id;
 
   useEffect(() => {
+    if (!alunoId) return;
+
     async function buscarBoletim() {
       try {
         const response = await fetch(
-          `http://localhost:5000/boletim/${alunoId}`
+          `http://localhost:5000/matriculas/aluno/${alunoId}`
         );
-
         const data = await response.json();
 
-        // Filtrar apenas disciplinas do semestre escolhido
-        const filtradas = data.filter(
-          (mat) => mat.disciplina.semestre === semestre
-        );
-
-        setDisciplinas(filtradas);
+        const cursando = data.filter((mat) => mat.status === "Cursando");
+        setDisciplinas(cursando);
       } catch (error) {
         console.error("Erro ao buscar boletim:", error);
       }
     }
 
     buscarBoletim();
-  }, [alunoId, semestre]);
+  }, [alunoId]);
 
   return (
     <div className="boletim-container">
-      <h2>Boletim - {semestre}º Semestre</h2>
+      <h2>Minhas Disciplinas</h2>
 
       <table className="boletim-tabela">
         <thead>
@@ -58,7 +56,7 @@ function BoletimSemestre({ alunoId, semestre }) {
             ))
           ) : (
             <tr>
-              <td colSpan="6">Nenhuma disciplina encontrada.</td>
+              <td colSpan="6">Nenhuma disciplina em andamento.</td>
             </tr>
           )}
         </tbody>

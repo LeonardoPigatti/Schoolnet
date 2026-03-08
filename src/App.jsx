@@ -57,7 +57,7 @@ function AppRoutes({ usuario }) {
     { path: "/TCC",                      element: <TCC alunoId={id} /> },
     { path: "/Requerimentos",            element: <Requerimentos alunoId={id} /> },
     { path: "/Diploma",                  element: <Diploma alunoId={id} /> },
-    { path: "/notas",                    element: <BoletimSemestre alunoId={id} semestre={1} /> },
+    { path: "/notas",                    element: <BoletimSemestre usuario={usuario}  /> },
   ];
 
   return (
