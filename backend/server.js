@@ -13,6 +13,8 @@ const { seed } = require("./controllers/seedController");
 const { getMatriz, getFinanceiro, calcularBolsa } = require("./controllers/alunoController");
 const { getBoletim } = require("./controllers/matriculaController");
 const documentoRoutes = require("./routes/documentoInstitucionalRoutes");
+const disciplinaRoutes = require("./routes/Disciplinaroutes");
+const ofertaRoutes = require("./routes/ofertaRoutes");
 
 const app = express();
 
@@ -42,6 +44,9 @@ app.use("/documentos-institucionais", documentoRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/calendario", calendarioRoutes);
 app.use("/matrizes-curriculares", matrizCurricularRoutes);
+app.use("/disciplinas", disciplinaRoutes);
+app.use("/ofertas", ofertaRoutes);
+
 
 
 

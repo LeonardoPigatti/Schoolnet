@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
 import useAuth from "./hooks/useAuth";
 import Home from "./pages/Home/Home";
+import Ofertas from "./pages/Ofertas/Ofertas";
 import Calendar from "./pages/Calendar/Calendar";
 import InstitutionalDocuments from "./pages/InstitutionalDocuments/InstitutionalDocuments";
 import CurriculumMatrix from "./pages/CurriculumMatrix/CurriculumMatrix";
@@ -42,7 +43,8 @@ function AppRoutes({ usuario }) {
     { path: "/Perfil",                   element: <PerfilAluno alunoId={id} /> },
     { path: "/repositorio",              element: <RepositorioInstitucional /> },
     { path: "/Impressao",                element: <CreditoImpressao alunoId={id} /> },
-    { path: "/matrizcurricular", element: <CurriculumMatrix usuario={usuario} /> },
+    { path: "/matrizcurricular",         element: <CurriculumMatrix usuario={usuario} /> },
+    { path: "/ofertas",                  element: <Ofertas usuario={usuario} /> },
     { path: "/professores",              element: <ListTeacher userId={id} /> },
     { path: "/horario",                  element: <HorarioAluno alunoId={id} /> },
     { path: "/pagfacil",                 element: <PagFacil alunoId={id} /> },
