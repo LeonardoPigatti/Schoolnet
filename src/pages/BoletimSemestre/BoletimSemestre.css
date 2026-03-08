@@ -1,54 +1,144 @@
+/* ── Container principal ─────────────────────────────────────────── */
 .boletim-container {
-  padding: 40px;
-  font-family: Arial, sans-serif;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.boletim-container h2 {
-  margin-bottom: 20px;
-  color: #333;
+/* ── Header ──────────────────────────────────────────────────────── */
+.boletim-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  margin-left: 7rem;
 }
 
+.boletim-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 0.25rem;
+}
+
+.boletim-subtitle {
+  font-size: 0.9rem;
+  color: #718096;
+  margin: 0;
+}
+
+/* ── Estado vazio / carregando ───────────────────────────────────── */
+.boletim-estado {
+  color: #718096;
+  font-size: 0.95rem;
+  padding: 1rem 0;
+}
+
+/* ── Wrapper da tabela ───────────────────────────────────────────── */
+.boletim-tabela-wrapper {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Tabela ──────────────────────────────────────────────────────── */
 .boletim-tabela {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
 }
 
-.boletim-tabela th,
-.boletim-tabela td {
-  padding: 12px;
-  text-align: center;
-}
-
-.boletim-tabela th {
-  background-color: #4caf50;
+.boletim-tabela thead tr {
+  background: black;
+  border-bottom: 1px solid #e2e8f0;
   color: white;
 }
 
-.boletim-tabela tr:hover {
-  background-color: #f5f5f5;
+.boletim-tabela th {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.status {
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 6px 10px;
+.boletim-tabela tbody tr {
+  border-bottom: 1px solid #edf2f7;
+  animation: fadeSlideIn 0.25s ease both;
+  transition: background 0.15s;
 }
 
-/* Status específicos */
-.Aprovado {
-  color: #2e7d32;
+.boletim-tabela tbody tr:last-child {
+  border-bottom: none;
 }
 
-.ReprovadoporNota {
-  color: #c62828;
+.boletim-tabela tbody tr:hover {
+  background: #f7fafc;
 }
 
-.ReprovadoporFalta {
-  color: #c62828;
+.boletim-tabela td {
+  padding: 0.85rem 1rem;
+  color: #2d3748;
 }
 
-.Cursando {
-  color: #ef6c00;
+/* ── Nome da disciplina ──────────────────────────────────────────── */
+.boletim-nome-disciplina {
+  font-weight: 500;
+  color: #1a202c;
+}
+
+/* ── Média destacada ─────────────────────────────────────────────── */
+.boletim-media {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+/* ── Badges de situação ──────────────────────────────────────────── */
+.boletim-badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.boletim-badge--aprovado {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.boletim-badge--recuperacao {
+  background: #fefcbf;
+  color: #744210;
+}
+
+.boletim-badge--reprovado {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.boletim-badge--reprovado-por-falta {
+  background: #e9d8fd;
+  color: #44337a;
+}
+
+.boletim-badge--cursando {
+  background: #bee3f8;
+  color: #2a4365;
+}
+
+/* ── Animação de entrada das linhas ──────────────────────────────── */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
